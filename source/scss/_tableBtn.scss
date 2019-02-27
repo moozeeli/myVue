@@ -40,6 +40,12 @@
     background-color: $blue;
 }
 
+
+.blueBtn{
+    @extend .editBtn;
+}
+
+
 .delBtn::selection,
 .editBtn::selection {
     background-color: #5a5a5a;
@@ -49,8 +55,9 @@
     background: $green;
     border: 0px;
     color: white;
-    padding: 2px 6px;
+    padding: 2px 10px;
     margin-left: 10px;
     border-radius: 2px;
     outline: none;
+    min-height: 24px;
 }

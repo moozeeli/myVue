@@ -23,10 +23,10 @@ var  listButton = {
 
 var infoEdit = {
 	template:`<div class="container">
-						<button @click="goBack">返回</button> 
+						<button class="blueBtn" @click="goBack">返回</button> 
 						<form>
 							<label>输入姓名：<input v-model="name" id="name"/></label>		
-							<button @click="submit">完成</button>					
+							<button @click="submit" class="greenBtn">完成</button>					
 						</form>
 				</div>`,
 	created:function(){
@@ -43,14 +43,14 @@ var infoEdit = {
 		},
 		submit(){
 			let that  = this;
-			this.$router.push(`/infoShow/${that.name}`);
+			this.$router.push(`/infoShow/${encodeURIComponent(that.name)}`);
 		}
 	}
 };
 
 var infoShow = {
 	template: `<div  class="container">
-							<button >返回</button> 
+							<button class="blueBtn" @click="goBack" >返回</button> 
 							<p>显示姓名：{{name}}</p>												
 						</div>`,
 	created: function () {
@@ -62,7 +62,9 @@ var infoShow = {
 		}
 	},
 	methods: {
-
+		goBack() {
+			window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+		},
 	}
 };
 
@@ -144,7 +146,7 @@ var  todolist = {
 			],
 		}
 	}
-}
+};
 
 Vue.component('vue-props-tips',{	
 		props:{
@@ -177,34 +179,6 @@ Vue.component('vue-props-tips',{
 	});
 
 
-
-// 依赖 props-tips.js 与 vue-todo-item.js
-var componentTest = {
-	template:`<div id="app">
-				
-				<div class="container">	 
-					<h4>vue-props-tips 案例</h4>
-					<button class="greenBtn" @click='showTips()'>显示tips</button>
-					<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
-				</div>
-			</div>`,
-	components: {
-	},
-	data:function(){
-		return {
-			textContent:'消息提示测试内容123',
-			tipsShow:false,
-			
-			text:{test:'test'}
-		}
-	},
-	methods:{
-		showTips:function(){
-			this.tipsShow=true;
-			this.textContent="怎么回事？"
-		}
-	}
-}
 
 
 let lt_modal = {
@@ -338,6 +312,7 @@ let lt_table = {
 		delThis: function (key) {
 			if (typeof key == 'number') {
 				this.tableData.splice(key, 1);
+				this.$emit("on-deleterecord");
 			} else {
 				console.error('lost key');
 			}
@@ -396,15 +371,31 @@ let lt_table = {
 
 let simpleCrm = {
 	template :`<div>
-					<lt_table></lt_table>
+					<lt_table @on-deleterecord="deleteRecord"></lt_table>
+					<button class="greenBtn" @click='showTips()'>显示tips</button>
+					<button class="greenBtn" @click='toEdit()'>toEdit</button>
+					<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
 				</div>`,
 	components:{
 		lt_table: lt_table
 	},
 	data(){
 		return{
-			title:'adfs'
+			textContent: '消息提示测试内容123',
+			tipsShow: false,
 		}
-	}
+	},
+	methods: {
+		showTips: function () {
+			this.tipsShow = true;
+			this.textContent = "tips 显示测试"
+		},
+		deleteRecord(){
+			this.tipsShow = true;
+			this.textContent = "删除一条记录！"
+		},
+		toEdit(){
+			this.$router.push("/infoEdit");
+		}
+	}	
 }
-

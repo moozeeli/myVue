@@ -30,11 +30,8 @@
     <!-- 使用 router-link 组件来导航. -->
     <!-- 通过传入 `to` 属性指定链接. -->
     <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
-    <li><router-link to="/simpleCrm">simpleCrm</router-link> </li>
+    <li><router-link to="/simpleCrm">列表管理</router-link> </li>
     <li><router-link to="/todolist">代办列表</router-link> </li>
-    <li><router-link to="/test">组件测试</router-link></li>
-    <li><router-link to="/infoShow">infoShow</router-link></li>
-    <li><router-link to="/infoEdit">infoEdit</router-link></li>
     <li><router-link to="/listButton">listButton</router-link></li>
     <li><router-link to="/tabBox">tabBox</router-link></li>
   </ul>
@@ -60,7 +57,6 @@
     var routes = [
       { path: '/todolist', component: todolist },
       { path: '/simpleCrm', component: simpleCrm },
-      { path: '/test', component: componentTest},
       { path: '/infoShow/:name', component: infoShow},
       { path: '/infoEdit', component: infoEdit},
       { path: '/listButton', component: listButton},

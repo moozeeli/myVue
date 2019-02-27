@@ -65,7 +65,8 @@ ul.nav {
     background: #ffa1a1; }
 
 .delBtn,
-.editBtn {
+.editBtn,
+.blueBtn {
   border: 0;
   color: white;
   padding: 4px 10px;
@@ -75,21 +76,23 @@ ul.nav {
   user-select: none;
   outline: none; }
 
-.editBtn {
+.editBtn, .blueBtn {
   background-color: #2dc0fb; }
 
 .delBtn::selection,
-.editBtn::selection {
+.editBtn::selection,
+.blueBtn::selection {
   background-color: #5a5a5a; }
 
 .greenBtn {
   background: #42c77f;
   border: 0px;
   color: white;
-  padding: 2px 6px;
+  padding: 2px 10px;
   margin-left: 10px;
   border-radius: 2px;
-  outline: none; }
+  outline: none;
+  min-height: 24px; }
 
 .table,
 .table th,
@@ -150,7 +153,7 @@ ul.nav {
   right: 0;
   height: 100%;
   width: 100%;
-  background: rgba(0, 0, 0, 0.8); }
+  background: rgba(0, 0, 0, 0.3); }
   .modal .modalDialog {
     width: 350px;
     margin: 0 auto;

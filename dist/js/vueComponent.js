@@ -17,7 +17,7 @@ var listButton = {
 };
 
 var infoEdit = {
-	template: '<div class="container">\n\t\t\t\t\t\t<button @click="goBack">\u8FD4\u56DE</button> \n\t\t\t\t\t\t<form>\n\t\t\t\t\t\t\t<label>\u8F93\u5165\u59D3\u540D\uFF1A<input v-model="name" id="name"/></label>\t\t\n\t\t\t\t\t\t\t<button @click="submit">\u5B8C\u6210</button>\t\t\t\t\t\n\t\t\t\t\t\t</form>\n\t\t\t\t</div>',
+	template: '<div class="container">\n\t\t\t\t\t\t<button class="blueBtn" @click="goBack">\u8FD4\u56DE</button> \n\t\t\t\t\t\t<form>\n\t\t\t\t\t\t\t<label>\u8F93\u5165\u59D3\u540D\uFF1A<input v-model="name" id="name"/></label>\t\t\n\t\t\t\t\t\t\t<button @click="submit" class="greenBtn">\u5B8C\u6210</button>\t\t\t\t\t\n\t\t\t\t\t\t</form>\n\t\t\t\t</div>',
 	created: function created() {},
 	data: function data() {
 		return {
@@ -31,13 +31,13 @@ var infoEdit = {
 		},
 		submit: function submit() {
 			var that = this;
-			this.$router.push('/infoShow/' + that.name);
+			this.$router.push('/infoShow/' + encodeURIComponent(that.name));
 		}
 	}
 };
 
 var infoShow = {
-	template: '<div  class="container">\n\t\t\t\t\t\t\t<button >\u8FD4\u56DE</button> \n\t\t\t\t\t\t\t<p>\u663E\u793A\u59D3\u540D\uFF1A{{name}}</p>\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>',
+	template: '<div  class="container">\n\t\t\t\t\t\t\t<button class="blueBtn" @click="goBack" >\u8FD4\u56DE</button> \n\t\t\t\t\t\t\t<p>\u663E\u793A\u59D3\u540D\uFF1A{{name}}</p>\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>',
 	created: function created() {},
 	data: function data() {
 		return {
@@ -45,7 +45,11 @@ var infoShow = {
 		};
 	},
 
-	methods: {}
+	methods: {
+		goBack: function goBack() {
+			window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+		}
+	}
 };
 
 var tabBox = {
@@ -129,26 +133,6 @@ Vue.component('vue-props-tips', {
 	}
 
 });
-
-// 依赖 props-tips.js 与 vue-todo-item.js
-var componentTest = {
-	template: '<div id="app">\n\t\t\t\t\n\t\t\t\t<div class="container">\t \n\t\t\t\t\t<h4>vue-props-tips \u6848\u4F8B</h4>\n\t\t\t\t\t<button class="greenBtn" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t</div>\n\t\t\t</div>',
-	components: {},
-	data: function data() {
-		return {
-			textContent: '消息提示测试内容123',
-			tipsShow: false,
-
-			text: { test: 'test' }
-		};
-	},
-	methods: {
-		showTips: function showTips() {
-			this.tipsShow = true;
-			this.textContent = "怎么回事？";
-		}
-	}
-};
 
 var lt_modal = {
 	props: {
@@ -235,6 +219,7 @@ var lt_table = {
 		delThis: function delThis(key) {
 			if (typeof key == 'number') {
 				this.tableData.splice(key, 1);
+				this.$emit("on-deleterecord");
 			} else {
 				console.error('lost key');
 			}
@@ -295,13 +280,28 @@ var lt_table = {
 };
 
 var simpleCrm = {
-	template: '<div>\n\t\t\t\t\t<lt_table></lt_table>\n\t\t\t\t</div>',
+	template: '<div>\n\t\t\t\t\t<lt_table @on-deleterecord="deleteRecord"></lt_table>\n\t\t\t\t\t<button class="greenBtn" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<button class="greenBtn" @click=\'toEdit()\'>toEdit</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t</div>',
 	components: {
 		lt_table: lt_table
 	},
 	data: function data() {
 		return {
-			title: 'adfs'
+			textContent: '消息提示测试内容123',
+			tipsShow: false
 		};
+	},
+
+	methods: {
+		showTips: function showTips() {
+			this.tipsShow = true;
+			this.textContent = "tips 显示测试";
+		},
+		deleteRecord: function deleteRecord() {
+			this.tipsShow = true;
+			this.textContent = "删除一条记录！";
+		},
+		toEdit: function toEdit() {
+			this.$router.push("/infoEdit");
+		}
 	}
 };
