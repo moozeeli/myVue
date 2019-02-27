@@ -1,31 +1,38 @@
 
-
 var infoEdit = {
-	template:`<p>
+	template:`<div>
 						<button @click="goBack">返回</button> 
 						<form>
-							<label>输入姓名：<input value="" id="name"/></label>							
+							<label>输入姓名：<input v-model="name" id="name"/></label>		
+							<button @click="submit">完成</button>					
 						</form>
-						</p>`,
+						</div>`,
 	created:function(){
-		console.log(this.$router);
+
+	},
+	data(){
+		return{
+			name:""
+		}
 	},
 	methods:{
 		goBack () {
 	      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
-	  }
+		},
+		submit(){
+			let that  = this;
+			this.$router.push(`/infoShow/${that.name}`);
+		}
 	}
 };
 
-
 var infoShow = {
-	template: `<p>
-						<button @click="goBack">返回</button> 
-						<p>输入姓名：{{name}}</p>						
-						
-						</p>`,
+	template: `<div>
+							<button >返回</button> 
+							<p>显示姓名：{{name}}</p>												
+						</div>`,
 	created: function () {
-		console.log(this.$router);
+
 	},
 	data(){
 		return{

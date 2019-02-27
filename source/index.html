@@ -33,9 +33,8 @@
     <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
     <li><router-link to="/todolist">代办列表</router-link> </li>
     <li><router-link to="/test">组件测试</router-link></li>
-    <li><router-link to="/listButton">listButton</router-link> </li>
-    <li><router-link to="/p-content">pContent</router-link></li>
-    <li><router-link to="/box1">box1</router-link></li>
+    <li><router-link to="/infoShow">infoShow</router-link></li>
+    <li><router-link to="/infoEdit">infoEdit</router-link></li>
   </ul>
   <!-- 路由出口 -->
   <!-- 路由匹配到的组件将渲染在这里 -->
@@ -59,9 +58,8 @@
     var routes = [
       { path: '/todolist', component: todolist },
       { path: '/test', component: componentTest},
-      { path: '/p-content', component: pContent},
-      { path: '/listButton', component: listButton},
-      { path: '/box1', component: box1},
+      { path: '/infoShow/:name', component: infoShow},
+      { path: '/infoEdit', component: infoEdit},
       // { path: '/barrage', component: barrage}
     ]
 

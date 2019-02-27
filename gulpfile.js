@@ -36,7 +36,7 @@ gulp.task('watch-javascript',function(){
             presets: es2015Presets
         }))   
 		.on('error',handleErr) // 报错防止中断
-		.pipe(gulp.dest('dist/js/*'))
+		.pipe(gulp.dest('dist/js/'))
 		.pipe(connect.reload()) //重新载入
 		console.log("user "+event.path+" has been "+event.type+", gulp task...")
 	})
