@@ -1,0 +1,40 @@
+.delBtn {
+    border: 0;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 3px;
+    background-color: #F75C5C;
+    cursor: pointer;
+    user-select: none; // 无法选中文字
+    outline: none;
+}
+
+.optionButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 6px;
+    .btn {
+        outline: none;
+        border: 0;
+        display: block;
+        padding: 6px 10px;
+        background: #ccc;
+        color: white;
+        border-radius: 3px;
+        font-size: 13px;
+        margin: 0 4px;
+        cursor: pointer;
+    }
+    .btn.blue {
+        background: #28AEE2;
+        ;
+    }
+    .btn.red {
+        background: #F75C5C;
+        ;
+    }
+}
+
+.delBtn::selection {
+    background-color: #5a5a5a;
+}
