@@ -184,7 +184,7 @@ var componentTest = {
 				
 				<div class="container">	 
 					<h4>vue-props-tips 案例</h4>
-					<button class="buttonStyle" @click='showTips()'>显示tips</button>
+					<button class="greenBtn" @click='showTips()'>显示tips</button>
 					<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
 				</div>
 			</div>`,

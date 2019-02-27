@@ -132,7 +132,7 @@ Vue.component('vue-props-tips', {
 
 // 依赖 props-tips.js 与 vue-todo-item.js
 var componentTest = {
-	template: '<div id="app">\n\t\t\t\t\n\t\t\t\t<div class="container">\t \n\t\t\t\t\t<h4>vue-props-tips \u6848\u4F8B</h4>\n\t\t\t\t\t<button class="buttonStyle" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t</div>\n\t\t\t</div>',
+	template: '<div id="app">\n\t\t\t\t\n\t\t\t\t<div class="container">\t \n\t\t\t\t\t<h4>vue-props-tips \u6848\u4F8B</h4>\n\t\t\t\t\t<button class="greenBtn" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t</div>\n\t\t\t</div>',
 	components: {},
 	data: function data() {
 		return {
