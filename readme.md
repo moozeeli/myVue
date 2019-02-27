@@ -12,6 +12,8 @@
 6. todo-item
 7. infoShow
 8. infoEdit
+9. lt_modal
+
 
 
 
