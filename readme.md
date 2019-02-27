@@ -3,6 +3,8 @@
 使用gulp转码scss及页面热加载
 2019年2月27日 上传github
 
+[项目演示](https://litonga.github.io/myVue/dist/index#/simpleCrm)
+
 ##### 包含的组件：
 1. lt_table 表格（待拆分）
 2. simpleCrm （待完善）
