@@ -111,3 +111,69 @@ var componentTest = {
 		}
 	}
 };
+
+var lt_table = {
+	template: "<div class=\"container\">\n\t\t\t\t\t<transition name=\"fade\">     \n\t\t\t\t\t\t<div class=\"modal\" v-show=\"addShow\"> <!-- add Modal -->\n\t\t\t\t\t\t\t<div class=\"modalDialog\">\t\t\t\n\t\t\t\t\t\t\t\t<div class=\"modalHead\">\u65B0\u589E</div>\n\t\t\t\t\t\t\t\t<div class=\"modalContent\">\t\t\t\n\t\t\t\t\t\t\t\t\t\t<p class=\"row\"><span class=\"left\">name :</span> <input class=\"right\" v-model.trim=\"newPerson.name\" type=\"text\"> </p>\n\t\t\t\t\t\t\t\t\t\t<p class=\"row\"><span class=\"left\">age :</span> <input class=\"right\"  v-model.number =\"newPerson.age\" type=\"text\"> </p>\n\t\t\t\t\t\t\t\t\t\t<p class=\"row\"><span class=\"left\">sex :</span> <input class=\"right\"  v-model=\"newPerson.sex\" type=\"text\"> </p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"modalBottom\">\n\t\t\t\t\t\t\t\t\t<div class=\"optionButton\">\n\t\t\t\t\t\t\t\t\t\t<button id=\"add\" class=\"btn blue\" @click=\"addPerson\">\u786E\u5B9A</button>\n\t\t\t\t\t\t\t\t\t\t<button class=\"btn blue\" @click=\"addShow=false\">\u53D6\u6D88</button> \n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>  <!-- add Modal--End -->\n\t\t\t\t\t</transition>\n\t\t\t\t\t<div class=\"optionButton\">\n\t\t\t\t\t\t<button id=\"add\" class=\"btn\" @click=\"addShow=true\">\u65B0\u589E</button>\n\t\t\t\t\t\t<button class=\"btn blue\" @click=\"save\"> \u4FDD\u5B58</button> \n\t\t\t\t\t\t<button class=\"btn red\" @click=\"delAll\"> \u5220\u9664\u5168\u90E8</button> \n\t\t\t\t\t</div>\n\t\t\t\t\t<table class='table'>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th >name</th>\n\t\t\t\t\t\t\t<th >age</th>\n\t\t\t\t\t\t\t<th >sex</th>\n\t\t\t\t\t\t\t<th >option</th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<template v-if=\"tableData.length>0\">\n\t\t\t\t\t\t\t<tr v-for='(value, key) in tableData'   >\n\t\t\t\t\t\t\t\t<td>{{ value.name }}</td>\n\t\t\t\t\t\t\t\t<td>{{ value.age }}</td>\n\t\t\t\t\t\t\t\t<td>{{ value.sex }}</td>\n\t\t\t\t\t\t\t\t<td><button unselectable=\"on\" class=\"delBtn\" v-on:click=\"delThis(key)\">del</button></td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</template>\n\t\t\t\t\t\t<template v-else>\n\t\t\t\t\t\t\t<tr height=\"300\">\n\t\t\t\t\t\t\t\t<td colspan=\"4\">\u6682\u65E0\u6570\u636E</td>\n\t\t\t\t\t\t\t</tr>\t\t\t\n\t\t\t\t\t\t</template>\n\t\t\t\t\t</table>\n\t\t\t\t</div>",
+	data: function data() {
+		return {
+			tableData: [],
+			newPerson: {
+				name: '',
+				age: '',
+				sex: ''
+			},
+			addShow: false
+		};
+	},
+
+	methods: {
+		delThis: function delThis(key) {
+			if (typeof key == 'number') {
+				this.tableData.splice(key, 1);
+			} else {
+				alert('meiyou key');
+			}
+		},
+		addPerson: function addPerson() {
+			if (this.newPerson.name == '' || this.newPerson.age == '' || this.newPerson.sex == '') {
+				alert('没有输入正确');
+			} else {
+
+				this.tableData.push(this.newPerson);
+				this.newPerson = { name: '', age: '', sex: '' };
+				this.addShow = false;
+			}
+		},
+		save: function save() {
+			console.count('保存');
+			localStorage.setItem("tableData", JSON.stringify(this.tableData));
+		},
+		delAll: function delAll() {
+			console.count('delAll');
+			this.tableData = [];
+		}
+	},
+	created: function created() {
+		if (localStorage.tableData) {
+			this.tableData = JSON.parse(localStorage.tableData);
+		}
+	},
+	updated: function updated() {
+		// 数据更新后保存到localStroage
+		console.count('updated');
+		localStorage.setItem("tableData", JSON.stringify(this.tableData));
+	}
+
+};
+
+var simpleCrm = {
+	template: "<div>\n\t\t\t\t\t<lt_table></lt_table>\n\t\t\t\t</div>",
+	components: {
+		lt_table: lt_table
+	},
+	data: function data() {
+		return {
+			title: 'adfs'
+		};
+	}
+};

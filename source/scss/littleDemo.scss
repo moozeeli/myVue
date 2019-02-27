@@ -2,19 +2,6 @@
 	border-collapse:collapse;
 	border:1px solid #eaeaea;
 }
-body{
-	margin-top: 50px;
-}
-[v-cloak] {
-    display: none;
-}
-.container{
-	width:80%;
-	margin:0 auto;
-}
-.tableWrap{
-	min-height: 500px;	
-}
 .table{
 	color:#333;
 	font-size: 14px;
@@ -41,6 +28,8 @@ body{
 		text-align: center;
 	}
 }
+
+
 .modal{	
 	position: fixed;
 	left: 0;right: 0;bottom: 0;right: 0;

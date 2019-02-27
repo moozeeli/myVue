@@ -150,6 +150,115 @@ var componentTest = {
 }
 
 
+let lt_table = {
+	template: `<div class="container">
+					<transition name="fade">     
+						<div class="modal" v-show="addShow"> <!-- add Modal -->
+							<div class="modalDialog">			
+								<div class="modalHead">新增</div>
+								<div class="modalContent">			
+										<p class="row"><span class="left">name :</span> <input class="right" v-model.trim="newPerson.name" type="text"> </p>
+										<p class="row"><span class="left">age :</span> <input class="right"  v-model.number ="newPerson.age" type="text"> </p>
+										<p class="row"><span class="left">sex :</span> <input class="right"  v-model="newPerson.sex" type="text"> </p>
+								</div>
+								<div class="modalBottom">
+									<div class="optionButton">
+										<button id="add" class="btn blue" @click="addPerson">确定</button>
+										<button class="btn blue" @click="addShow=false">取消</button> 
+									</div>
+								</div>
+							</div>
+						</div>  <!-- add Modal--End -->
+					</transition>
+					<div class="optionButton">
+						<button id="add" class="btn" @click="addShow=true">新增</button>
+						<button class="btn blue" @click="save"> 保存</button> 
+						<button class="btn red" @click="delAll"> 删除全部</button> 
+					</div>
+					<table class='table'>
+						<tr>
+							<th >name</th>
+							<th >age</th>
+							<th >sex</th>
+							<th >option</th>
+						</tr>
+						<template v-if="tableData.length>0">
+							<tr v-for='(value, key) in tableData'   >
+								<td>{{ value.name }}</td>
+								<td>{{ value.age }}</td>
+								<td>{{ value.sex }}</td>
+								<td><button unselectable="on" class="delBtn" v-on:click="delThis(key)">del</button></td>
+							</tr>
+						</template>
+						<template v-else>
+							<tr height="300">
+								<td colspan="4">暂无数据</td>
+							</tr>			
+						</template>
+					</table>
+				</div>`,	
+	data() {
+		return {
+			tableData: [],
+			newPerson: {
+				name: '',
+				age: '',
+				sex: '',
+			},
+			addShow: false,
+		}
+	},
+	methods: {
+		delThis: function (key) {
+			if (typeof key == 'number') {
+				this.tableData.splice(key, 1);
+			} else {
+				alert('meiyou key')
+			}
+		},
+		addPerson: function () {
+			if (this.newPerson.name == '' || this.newPerson.age == '' || this.newPerson.sex == '') {
+				alert('没有输入正确')
+			} else {
+
+				this.tableData.push(this.newPerson);
+				this.newPerson = { name: '', age: '', sex: '' };
+				this.addShow = false;
+			}
+		},
+		save: function () {
+			console.count('保存');
+			localStorage.setItem("tableData", JSON.stringify(this.tableData));
+		},
+		delAll: function () {
+			console.count('delAll');
+			this.tableData = [];
+		}
+	},
+	created: function () {
+		if (localStorage.tableData) {
+			this.tableData = JSON.parse(localStorage.tableData);
+		}
+	},
+	updated: function () { // 数据更新后保存到localStroage
+		console.count('updated');
+		localStorage.setItem("tableData", JSON.stringify(this.tableData));
+	}
+	
+}
 
 
+let simpleCrm = {
+	template :`<div>
+					<lt_table></lt_table>
+				</div>`,
+	components:{
+		lt_table: lt_table
+	},
+	data(){
+		return{
+			title:'adfs'
+		}
+	}
+}
 
