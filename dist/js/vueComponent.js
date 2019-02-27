@@ -1,7 +1,23 @@
-"use strict";
+'use strict';
+
+var listButton = {
+	template: '<ul class="myul">\n\t\t\t\t<li v-for="(item,index) in list" @click="changeName(index)">{{item.name}}</li>\n\t\t\t</ul>',
+	data: function data() {
+		return {
+			list: [{ name: '123', key: 0 }, { name: '123', key: 1 }, { name: '123', key: 2 }, { name: '123', key: 3 }]
+
+		};
+	},
+
+	methods: {
+		changeName: function changeName(index) {
+			this.list[index].name = "您点击了";
+		}
+	}
+};
 
 var infoEdit = {
-	template: "<div>\n\t\t\t\t\t\t<button @click=\"goBack\">\u8FD4\u56DE</button> \n\t\t\t\t\t\t<form>\n\t\t\t\t\t\t\t<label>\u8F93\u5165\u59D3\u540D\uFF1A<input v-model=\"name\" id=\"name\"/></label>\t\t\n\t\t\t\t\t\t\t<button @click=\"submit\">\u5B8C\u6210</button>\t\t\t\t\t\n\t\t\t\t\t\t</form>\n\t\t\t\t\t\t</div>",
+	template: '<div class="container">\n\t\t\t\t\t\t<button @click="goBack">\u8FD4\u56DE</button> \n\t\t\t\t\t\t<form>\n\t\t\t\t\t\t\t<label>\u8F93\u5165\u59D3\u540D\uFF1A<input v-model="name" id="name"/></label>\t\t\n\t\t\t\t\t\t\t<button @click="submit">\u5B8C\u6210</button>\t\t\t\t\t\n\t\t\t\t\t\t</form>\n\t\t\t\t</div>',
 	created: function created() {},
 	data: function data() {
 		return {
@@ -15,13 +31,13 @@ var infoEdit = {
 		},
 		submit: function submit() {
 			var that = this;
-			this.$router.push("/infoShow/" + that.name);
+			this.$router.push('/infoShow/' + that.name);
 		}
 	}
 };
 
 var infoShow = {
-	template: "<div>\n\t\t\t\t\t\t\t<button >\u8FD4\u56DE</button> \n\t\t\t\t\t\t\t<p>\u663E\u793A\u59D3\u540D\uFF1A{{name}}</p>\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>",
+	template: '<div  class="container">\n\t\t\t\t\t\t\t<button >\u8FD4\u56DE</button> \n\t\t\t\t\t\t\t<p>\u663E\u793A\u59D3\u540D\uFF1A{{name}}</p>\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>',
 	created: function created() {},
 	data: function data() {
 		return {
@@ -30,6 +46,28 @@ var infoShow = {
 	},
 
 	methods: {}
+};
+
+var tabBox = {
+	template: '<div class="box">    \n\t\t\t\t<ul class=\'box-list\'>\n\t\t\t\t\t<li class="box-menuItem"\n\t\t\t\t\t\tv-for="(value,key) in list"\n\t\t\t\t\t\tv-bind:class="{active: activeIndex == key }"\n\t\t\t\t\t\tv-on:click=\'activeIndex = key\'\n\t\t\t\t\t>{{value.text}}</li>\n\t\t\t\t</ul>\n\t\t\t\t<p class=\'content\'> \u60A8\u70B9\u51FB\u4E86\uFF1A{{list[activeIndex].text}}</p>\n\t\t\t</div>',
+	data: function data() {
+		return {
+			list: [{ text: 'item1', isActive: true }, { text: 'item2', isActive: false }, { text: 'item3', isActive: false }, { text: 'item4', isActive: false }],
+			activeIndex: 0,
+			text: "item1"
+		};
+	},
+
+	methods: {
+		factive: function factive(key) {
+			// 使用循环有些浪费，不知道有没有更简便的方法。
+			for (var i in this.list) {
+				this.list[i].isActive = false;
+			}
+			this.list[key].isActive = true;
+			this.text = this.list[key].text;
+		}
+	}
 };
 
 Vue.component('todo-item', {
@@ -53,7 +91,7 @@ Vue.component('todo-item', {
 });
 
 var todolist = {
-	template: "<div class=\"container\">\t\n\t\t\t\t\t<h4>{{message}}</h4>\n\t\t\t\t\t<p class='tips'>todo-item\u7EC4\u4EF6</p>\n\t\t\t\t\t<ul>\n\t\t\t\t\t\t<todo-item v-for=\"value in array\" :key='value.text' :count=\"value.count\" :todo=\"value.text\" ></todo-item>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>",
+	template: '<div class="container">\t\n\t\t\t\t\t<h4>{{message}}</h4>\n\t\t\t\t\t<p class=\'tips\'>todo-item\u7EC4\u4EF6</p>\n\t\t\t\t\t<ul>\n\t\t\t\t\t\t<todo-item v-for="value in array" :key=\'value.text\' :count="value.count" :todo="value.text" ></todo-item>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>',
 	data: function data() {
 		return {
 			message: 'todo-item 小案例',
@@ -94,7 +132,7 @@ Vue.component('vue-props-tips', {
 
 // 依赖 props-tips.js 与 vue-todo-item.js
 var componentTest = {
-	template: "<div id=\"app\">\n\t\t\t\t\n\t\t\t\t<div class=\"container\">\t \n\t\t\t\t\t<h4>vue-props-tips \u6848\u4F8B</h4>\n\t\t\t\t\t<button class=\"buttonStyle\" @click='showTips()'>\u663E\u793Atips</button>\n\t\t\t\t\t<vue-props-tips v-model=\"tipsShow\" :content=\"textContent\" v-on:close=\"tipsShow=false\"></vue-props-tips>\t\n\t\t\t\t</div>\n\t\t\t</div>",
+	template: '<div id="app">\n\t\t\t\t\n\t\t\t\t<div class="container">\t \n\t\t\t\t\t<h4>vue-props-tips \u6848\u4F8B</h4>\n\t\t\t\t\t<button class="buttonStyle" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t</div>\n\t\t\t</div>',
 	components: {},
 	data: function data() {
 		return {
@@ -113,7 +151,7 @@ var componentTest = {
 };
 
 var lt_table = {
-	template: "<div class=\"container\">\n\t\t\t\t\t<transition name=\"fade\">     \n\t\t\t\t\t\t<div class=\"modal\" v-show=\"addShow\"> <!-- add Modal -->\n\t\t\t\t\t\t\t<div class=\"modalDialog\">\t\t\t\n\t\t\t\t\t\t\t\t<div class=\"modalHead\">\u65B0\u589E</div>\n\t\t\t\t\t\t\t\t<div class=\"modalContent\">\t\t\t\n\t\t\t\t\t\t\t\t\t\t<p class=\"row\"><span class=\"left\">name :</span> <input class=\"right\" v-model.trim=\"newPerson.name\" type=\"text\"> </p>\n\t\t\t\t\t\t\t\t\t\t<p class=\"row\"><span class=\"left\">age :</span> <input class=\"right\"  v-model.number =\"newPerson.age\" type=\"text\"> </p>\n\t\t\t\t\t\t\t\t\t\t<p class=\"row\"><span class=\"left\">sex :</span> <input class=\"right\"  v-model=\"newPerson.sex\" type=\"text\"> </p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"modalBottom\">\n\t\t\t\t\t\t\t\t\t<div class=\"optionButton\">\n\t\t\t\t\t\t\t\t\t\t<button id=\"add\" class=\"btn blue\" @click=\"addPerson\">\u786E\u5B9A</button>\n\t\t\t\t\t\t\t\t\t\t<button class=\"btn blue\" @click=\"addShow=false\">\u53D6\u6D88</button> \n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>  <!-- add Modal--End -->\n\t\t\t\t\t</transition>\n\t\t\t\t\t<div class=\"optionButton\">\n\t\t\t\t\t\t<button id=\"add\" class=\"btn\" @click=\"addShow=true\">\u65B0\u589E</button>\n\t\t\t\t\t\t<button class=\"btn blue\" @click=\"save\"> \u4FDD\u5B58</button> \n\t\t\t\t\t\t<button class=\"btn red\" @click=\"delAll\"> \u5220\u9664\u5168\u90E8</button> \n\t\t\t\t\t</div>\n\t\t\t\t\t<table class='table'>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th >name</th>\n\t\t\t\t\t\t\t<th >age</th>\n\t\t\t\t\t\t\t<th >sex</th>\n\t\t\t\t\t\t\t<th >option</th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<template v-if=\"tableData.length>0\">\n\t\t\t\t\t\t\t<tr v-for='(value, key) in tableData'   >\n\t\t\t\t\t\t\t\t<td>{{ value.name }}</td>\n\t\t\t\t\t\t\t\t<td>{{ value.age }}</td>\n\t\t\t\t\t\t\t\t<td>{{ value.sex }}</td>\n\t\t\t\t\t\t\t\t<td><button unselectable=\"on\" class=\"delBtn\" v-on:click=\"delThis(key)\">del</button></td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</template>\n\t\t\t\t\t\t<template v-else>\n\t\t\t\t\t\t\t<tr height=\"300\">\n\t\t\t\t\t\t\t\t<td colspan=\"4\">\u6682\u65E0\u6570\u636E</td>\n\t\t\t\t\t\t\t</tr>\t\t\t\n\t\t\t\t\t\t</template>\n\t\t\t\t\t</table>\n\t\t\t\t</div>",
+	template: '<div class="container">\n\t\t\t\t\t<transition name="fade">     \n\t\t\t\t\t\t<div class="modal" v-show="addShow"> <!-- add Modal -->\n\t\t\t\t\t\t\t<div class="modalDialog">\t\t\t\n\t\t\t\t\t\t\t\t<div class="modalHead">\u65B0\u589E</div>\n\t\t\t\t\t\t\t\t<div class="modalContent">\t\t\t\n\t\t\t\t\t\t\t\t\t\t<p class="row"><span class="left">name :</span> <input class="right" v-model.trim="newPerson.name" type="text"> </p>\n\t\t\t\t\t\t\t\t\t\t<p class="row"><span class="left">age :</span> <input class="right"  v-model.number ="newPerson.age" type="text"> </p>\n\t\t\t\t\t\t\t\t\t\t<p class="row"><span class="left">sex :</span> <input class="right"  v-model="newPerson.sex" type="text"> </p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class="modalBottom">\n\t\t\t\t\t\t\t\t\t<div class="optionButton">\n\t\t\t\t\t\t\t\t\t\t<button id="add" class="btn blue" @click="addPerson">\u786E\u5B9A</button>\n\t\t\t\t\t\t\t\t\t\t<button class="btn blue" @click="addShow=false">\u53D6\u6D88</button> \n\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>  <!-- add Modal--End -->\n\t\t\t\t\t</transition>\n\t\t\t\t\t<div class="optionButton">\n\t\t\t\t\t\t<button id="add" class="btn" @click="addShow=true">\u65B0\u589E</button>\n\t\t\t\t\t\t<button class="btn blue" @click="save"> \u4FDD\u5B58</button> \n\t\t\t\t\t\t<button class="btn red" @click="delAll"> \u5220\u9664\u5168\u90E8</button> \n\t\t\t\t\t</div>\n\t\t\t\t\t<table class=\'table\'>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th >name</th>\n\t\t\t\t\t\t\t<th >age</th>\n\t\t\t\t\t\t\t<th >sex</th>\n\t\t\t\t\t\t\t<th >option</th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<template v-if="tableData.length>0">\n\t\t\t\t\t\t\t<tr v-for=\'(value, key) in tableData\'   >\n\t\t\t\t\t\t\t\t<td>{{ value.name }}</td>\n\t\t\t\t\t\t\t\t<td>{{ value.age }}</td>\n\t\t\t\t\t\t\t\t<td>{{ value.sex }}</td>\n\t\t\t\t\t\t\t\t<td><button unselectable="on" class="delBtn" v-on:click="delThis(key)">del</button></td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t</template>\n\t\t\t\t\t\t<template v-else>\n\t\t\t\t\t\t\t<tr height="300">\n\t\t\t\t\t\t\t\t<td colspan="4">\u6682\u65E0\u6570\u636E</td>\n\t\t\t\t\t\t\t</tr>\t\t\t\n\t\t\t\t\t\t</template>\n\t\t\t\t\t</table>\n\t\t\t\t</div>',
 	data: function data() {
 		return {
 			tableData: [],
@@ -167,7 +205,7 @@ var lt_table = {
 };
 
 var simpleCrm = {
-	template: "<div>\n\t\t\t\t\t<lt_table></lt_table>\n\t\t\t\t</div>",
+	template: '<div>\n\t\t\t\t\t<lt_table></lt_table>\n\t\t\t\t</div>',
 	components: {
 		lt_table: lt_table
 	},

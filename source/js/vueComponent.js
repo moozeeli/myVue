@@ -1,12 +1,34 @@
 
+var  listButton = {
+	template:`<ul class="myul">
+				<li v-for="(item,index) in list" @click="changeName(index)">{{item.name}}</li>
+			</ul>`,
+	data(){
+		return {
+			list: [
+				{ name: '123', key: 0 },
+				{ name: '123', key: 1 },
+				{ name: '123', key: 2 },
+				{ name: '123', key: 3 },
+			]
+
+		}
+	},
+	methods: {
+		changeName: function (index) {
+			this.list[index].name = "您点击了";
+		}
+	}
+}
+
 var infoEdit = {
-	template:`<div>
+	template:`<div class="container">
 						<button @click="goBack">返回</button> 
 						<form>
 							<label>输入姓名：<input v-model="name" id="name"/></label>		
 							<button @click="submit">完成</button>					
 						</form>
-						</div>`,
+				</div>`,
 	created:function(){
 
 	},
@@ -27,7 +49,7 @@ var infoEdit = {
 };
 
 var infoShow = {
-	template: `<div>
+	template: `<div  class="container">
 							<button >返回</button> 
 							<p>显示姓名：{{name}}</p>												
 						</div>`,
@@ -45,6 +67,41 @@ var infoShow = {
 };
 
 
+
+var tabBox = {
+	template:`<div class="box">    
+				<ul class='box-list'>
+					<li class="box-menuItem"
+						v-for="(value,key) in list"
+						v-bind:class="{active: activeIndex == key }"
+						v-on:click='activeIndex = key'
+					>{{value.text}}</li>
+				</ul>
+				<p class='content'> 您点击了：{{list[activeIndex].text}}</p>
+			</div>`,
+	data(){
+		return {
+			list: [
+				{ text: 'item1', isActive: true },
+				{ text: 'item2', isActive: false },
+				{ text: 'item3', isActive: false },
+				{ text: 'item4', isActive: false }
+			],
+			activeIndex:0,
+			text: "item1"
+		}
+	},
+	methods: {
+		factive: function (key) {
+			// 使用循环有些浪费，不知道有没有更简便的方法。
+			for (var i in this.list) {
+				this.list[i].isActive = false;
+			}
+			this.list[key].isActive = true;
+			this.text = this.list[key].text;
+		}
+	}   
+}
 
 
 Vue.component('todo-item',{	

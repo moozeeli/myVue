@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/littleDemo.css">
     <link rel="stylesheet" href="./css/vuePropsTips.css">
-    <link rel="stylesheet" href="./css/listButton.css">
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>   
     <script src="./js/vueComponent.js"></script>
@@ -37,6 +36,8 @@
     <li><router-link to="/test">组件测试</router-link></li>
     <li><router-link to="/infoShow">infoShow</router-link></li>
     <li><router-link to="/infoEdit">infoEdit</router-link></li>
+    <li><router-link to="/listButton">listButton</router-link></li>
+    <li><router-link to="/tabBox">tabBox</router-link></li>
   </ul>
   <!-- 路由出口 -->
   <!-- 路由匹配到的组件将渲染在这里 -->
@@ -63,6 +64,8 @@
       { path: '/test', component: componentTest},
       { path: '/infoShow/:name', component: infoShow},
       { path: '/infoEdit', component: infoEdit},
+      { path: '/listButton', component: listButton},
+      { path: '/tabBox', component: tabBox},
       // { path: '/barrage', component: barrage}
     ]
 
