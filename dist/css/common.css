@@ -1,0 +1,111 @@
+@charset "UTF-8";
+body, p, h1, h2, h3, h4, h5 {
+  padding: 0;
+  margin: 0; }
+
+ul, li {
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+a {
+  font-size: 14x;
+  text-decoration: none;
+  color: inherit; }
+
+ul.nav {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 1; }
+
+ul.nav > li {
+  width: 100px;
+  padding: 0  10px;
+  border-right: 1px solid #eaeaea;
+  height: 33px;
+  line-height: 33px;
+  text-align: center;
+  font-size: 14px;
+  color: #2dc0fb; }
+
+.nav > li:hover, .router-link-active {
+  text-decoration: underline; }
+
+.nav > li:last-child {
+  border-right: none; }
+
+[v-cloak] {
+  display: none; }
+
+.buttonStyle {
+  background: #42c77f;
+  border: 0px;
+  color: white;
+  padding: 2px 6px;
+  margin-left: 10px;
+  border-radius: 2px;
+  outline: none; }
+
+.backBtn {
+  font-size: 13px;
+  background-color: #ffa1a1;
+  color: white;
+  padding-top: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 2px 8px;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-bottom: 20px;
+  float: right; }
+
+.tips {
+  color: #ccc;
+  font-size: 12px; }
+
+.container {
+  padding: 20px;
+  margin: 40px 20px;
+  border: 1px solid #eaeaea; }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s; }
+
+.fade-enter, .fade-leave-to {
+  opacity: 0; }
+
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-fade-enter-active {
+  transition: all .3s ease; }
+
+.slide-fade-leave-active {
+  transition: all .3s ease; }
+
+.slide-fade-enter, .slide-fade-leave-to {
+  transform: translateX(430px); }
+
+.box {
+  border: 1px solid #eaeaea;
+  height: 200px;
+  min-width: 30px;
+  max-width: 400px;
+  margin: 20px auto; }
+  .box .content {
+    padding: 10px; }
+  .box .list {
+    overflow: hidden; }
+  .box .menuItem {
+    float: left;
+    text-align: center;
+    padding: 5px 0;
+    width: 100px;
+    background-color: #eaeaea;
+    user-select: none;
+    cursor: pointer; }
+  .box .menuItem.active {
+    color: white;
+    background: #565656; }

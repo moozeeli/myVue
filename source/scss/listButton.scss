@@ -1,0 +1,15 @@
+.myul{line-height: 30px;overflow: hidden;margin-top:20px;}
+.myul>li{
+    border:1px solid #ccc;
+    width:150px;
+    text-align: center;
+    margin:0 3px ;
+    font-size:13px;
+    color:#848484;
+    border-radius:5px;
+    float: left;
+}
+.myul>li:hover{
+    color:#ff9090;
+    border-color:#ff9090;
+}

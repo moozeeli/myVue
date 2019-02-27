@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>弹幕</title>
+	<script src="js/vue-v2.5.13.js"></script>
+	<script src="js/vue-barrage.js"></script>
+	<link rel="stylesheet" href="css/barrage.css">
+	<style>
+		.barrage{
+			 position: fixed;
+			 top:0;
+			 bottom: 0;
+			 left: 0;
+			 width: 100%;
+			 height: 100%;
+			}
+		#control{
+			 position: fixed;
+			 top: 0;
+			 left: 0;
+	 font-size: 40px
+			}
+	</style>
+</head>
+<body>
+	<div id="app">
+		
+		<div class="barrage">
+	        <button id="control" @click="stopBarrage($event)">暂停</button>
+			<barrage ref="barrage" @runClick="runClick"></barrage>
+		</div>
+	</div>
+
+	<script>
+		var appVue = new Vue({
+				el:"#app",
+				data:{},				
+				mounted:function() {
+					this.$refs.barrage._initBarriage({
+						square: document.getElementsByClassName('barrage_container')[0], //容器
+						road_high: 95, //行高
+						 road_padding: 18, //每行中是否固定边界距离，不传不固定
+						road_per_runner: 10, //每行中最多的数量
+						show_lines: true, //是否显示边界线条，作为参考
+						duration: 10, //控制速度，最小为1，不传默认
+						runners: ['今晚不知道要吃什么',
+									'早睡早起好身体',
+									'iphone爆炸了',
+									'天高破产了哈哈哈',
+									'新美互动组',
+									'测试数据啦',
+									'下班晚又不跑步了',
+									'天天这样是会死人的',
+									'真的吗，我有点不相信',
+									'今天踩到狗屎了',
+									'扎心了，老铁',
+									'我家养了一条狗',
+									'你今天跑步了吗',
+									'听说下雨天和巧克力更配哦']
+					})
+				},
+				methods: {
+					stopBarrage:function(ev) {
+						let $target = ev.target,isStop
+						if($target.innerText == '暂停'){
+							$target.innerText = '开始'
+							isStop = true
+						}else{
+							$target.innerText = '暂停'
+							isStop = false
+						}
+						this.$refs.barrage.operate_runner_event(isStop)
+					},
+					runClick:function(element) {
+						console.log(element)
+					}
+				}
+			})
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vu列表</title>
+	<link rel="stylesheet" href="css/common.css">
+	<script src='lib/vue-2.4.2.js'></script>
+	<style>
+		ul,li{
+			padding:0;margin: 0;
+			list-style-type: none;
+		}
+		.list{
+			overflow: hidden;
+		}
+		.menuItem{
+			float:left;
+            text-align: center;
+            padding: 5px 0;
+            width:100px;
+			background-color: #eaeaea;
+			user-select: none;
+			cursor: pointer;
+		}
+		.menuItem.active{
+			color: white;
+		    background: #565656;
+		}
+        .box{
+            border:1px solid #eaeaea;
+            height:200px;
+            min-width: 30px;
+            max-width: 400px;
+            margin:20px auto;
+        }
+        .content{
+            padding:10px;
+        }
+	</style>
+</head>
+<body>
+<div ><a class="backBtn" href="/">返回</a></div>
+<!-- 创建一个可选中某一项的菜单，点击选中后提示选中了什么 -->
+<div id="app">	
+	<div class="box">    
+        <ul class='list'>
+            <li class="menuItem"
+            	v-for="(value,key) in list"
+            	v-bind:class="{active: activeIndex == key }"
+            	v-on:click='activeIndex = key'
+            >{{value.text}}</li>
+        </ul>
+        <p class='content'> 您点击了：{{list[activeIndex].text}}</p>
+	</div>
+</div>
+
+<div id="app2">
+	<div class="box"> 
+        <ul class='list'>
+            <li class="menuItem"
+                v-for="(value,key) in list" 
+                v-bind:class="{active:value.isActive}"  
+                v-on:click='factive(key)'
+            >{{value.text}}</li>
+        </ul>
+        <p class='content'> 您点击了：{{text}}</p>
+    </div>
+</div>
+<script>
+
+	var vueApp1 = new Vue({
+		el:'#app',
+		data:{
+			list:[ 
+				{text:'item1'},
+				{text:'item2'},
+				{text:'item3'},
+				{text:'item4'}
+			],
+			activeIndex:0
+		}
+	})
+
+	var vueApp2 = new Vue({
+		el:'#app2',
+		data:{
+			list:[ 
+				{text:'item1',isActive:true},
+				{text:'item2',isActive:false},
+				{text:'item3',isActive:false},
+				{text:'item4',isActive:false}
+			],
+			text:"item1"
+		},
+        methods:{
+                factive:function(key){
+                    // 使用循环有些浪费，不知道有没有更简便的方法。
+                    for(var i in this.list){
+                        this.list[i].isActive = false;
+                    }
+                    this.list[key].isActive = true;
+                    this.text = this.list[key].text;
+                }
+            }        
+	})
+</script>
+
+	
+</body>
+</html>

@@ -1,0 +1,26 @@
+.box{
+            border:1px solid #eaeaea;
+            height:200px;
+            min-width: 30px;
+            max-width: 400px;
+			margin:20px auto;
+			.content{
+				padding:10px;
+			}
+			.list{
+				overflow: hidden;
+			}
+			.menuItem{
+				float:left;
+				text-align: center;
+				padding: 5px 0;
+				width:100px;
+				background-color: #eaeaea;
+				user-select: none;
+				cursor: pointer;
+			}
+			.menuItem.active{
+				color: white;
+				background: #565656;
+			}
+        }

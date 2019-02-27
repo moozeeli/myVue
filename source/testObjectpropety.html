@@ -1,0 +1,52 @@
+<!-- 测试暴露的实例属性与方法 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/common.css">
+	<script src='lib/vue-2.4.2.js'></script>
+</head>
+<body>
+
+<div id="app">
+	{{ text }}
+	<p v-html='html'>{{text}}</p>
+</div>
+<script>
+	var vm = new Vue({
+		el:'#app',
+		data:{
+			text:'',
+			html:'<li>this is a list Item</li>'
+		},
+		created:function(){
+			console.log('实例被创建');
+			this.text = "实例被创建了";
+		},
+		beforeCreate:function(){
+			this.text = "";  // 此句无效，因为实例还未创建
+			alert('实例还没有创建呢')
+			console.log('实例还没有创建呢');
+		},
+		beforeMount:function(){
+			console.log('beforeMount')
+		},
+		mounted:function(){
+			console.log('mounted');
+		}
+
+	})
+
+	console.log(vm.$el);
+	console.log(vm.$data);
+
+	vm.$watch('text',function(newVal,oldVal){
+		console.log('text has changed from "'+oldVal+'" to "'+newVal+'"')
+	})
+
+
+</script>
+	
+</body>
+</html>

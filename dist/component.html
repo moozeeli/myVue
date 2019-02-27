@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>component</title>
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/vuePropsTips.css">
+</head>
+<body>
+<div ><a class="backBtn" href="/">返回</a></div>
+<div id="app">
+	<div class="container">	
+		<h4>{{message}}</h4>
+		<p class='tips'>todo-item组件</p>
+		<ul>
+			<todo-item v-for="value in array" :key='value.text' :count="value.count" :todo="value.text" ></todo-item>
+		</ul>
+
+	</div>
+	<div class="container">	 
+		<h4>vue-props-tips 案例</h4>
+		<button class="buttonStyle" @click='tipsShow=true'>显示tips</button>
+		<vue-props-tips v-if="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
+	</div>
+</div>
+
+<script src='./lib/vue-2.4.2.js'></script>
+<script src="./js/vue-todo-item.js"></script>
+<script src="./js/vue-props-tips.js"></script>
+
+<script>
+	var app = new Vue({
+		el:'#app',
+		component:todoItem
+		components: {
+		    'vue-props-tips': vuePropsTips,
+		    'todo-item': todoItem
+		},
+		data:{
+			message:'todo-item 小案例',
+			textContent:'消息提示测试内容123',
+			tipsShow:false,
+			array:[
+				{text:'text2',count:12},
+				{text:'text3',count:13},
+				{text:'text4',count:14},
+				{text:'text5',count:15},
+				{text:'text6',count:16}
+			],
+			text:{test:'test'}
+		}
+	})
+
+
+</script>	
+</body>
+</html>

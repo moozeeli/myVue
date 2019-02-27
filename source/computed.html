@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>computed Test</title>
+	<script src="/js/vue-v2.5.13.js"></script>	
+	<style>
+		#app{
+			border:1px solid #eaeaea;
+			padding:10px 30px;
+			width: 260px;
+		}
+	</style>
+</head>
+<body>
+	<p>测试 computed反写</p>
+	<p>在控制台修改 app.fullName 可反写firstName和lastName</p>
+	<div id="app">
+		<p>firstname: {{firstName}}</p>
+		<p>lastName: {{lastName}}</p>
+		<p>fullName: {{fullName}}</p>
+	</div>
+	<script>
+		var app = new Vue({
+			el:'#app',
+			data:{
+				firstName:'李',				
+				lastName:'同'				
+			},
+			computed:{
+				fullName:{
+
+					get:function() {
+						return this.firstName+" "+this.lastName;
+					},
+					set:function(newValue){
+						var names = newValue.split(' ');
+						this.firstName = names[0];
+						this.lastName = names[names.length - 1];						
+					}
+				}
+			}
+		});
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>vue test</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- 禁止数字识别为电话号码 -->
+    <meta name="format-detection" content="telephone=no">
+    <!-- 忽略邮箱 -->
+    <meta name="format-detection" content="email=no">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/vuePropsTips.css">
+    <link rel="stylesheet" href="./css/listButton.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>   
+    <script src="./js/vueComponent.js"></script>
+    <style>
+        .nav{
+            padding-top: 20px;
+        }
+       
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+  <ul class='nav'>
+    <!-- 使用 router-link 组件来导航. -->
+    <!-- 通过传入 `to` 属性指定链接. -->
+    <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+    <li><router-link to="/todolist">代办列表</router-link> </li>
+    <li><router-link to="/test">组件测试</router-link></li>
+    <!-- <li><router-link to="/listButton">listButton</router-link> </li> -->
+    <li><router-link to="/infoEdit">显示内容</router-link></li>
+    <li><router-link to="/infoShow">编辑内容</router-link></li>
+
+    <li><router-link to="/bar/thisisid">bar</router-link></li>
+    <!-- <li><router-link to="/box1">box1</router-link></li> -->
+  </ul>
+  <!-- 路由出口 -->
+  <!-- 路由匹配到的组件将渲染在这里 -->
+  <router-view></router-view>      
+
+</div>
+
+
+<script>
+    // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter) 
+    // 1. 定义 (路由) 组件。
+    // 可以从其他文件 import 进来  
+    var Bar = { template: '<div>bar id:{{ $route.params.id }} </div>' }
+    
+
+    // 2. 定义路由
+    // 每个路由应该映射一个组件。 其中"component" 可以是
+    // 通过 Vue.extend() 创建的组件构造器，
+    // 或者，只是一个组件配置对象。
+    // 我们晚点再讨论嵌套路由。
+    var routes = [
+      { path: '/todolist', component: todolist },
+      { path: '/bar/:id', component: Bar },
+      { path: '/test', component: componentTest},
+      { path: '/infoEdit', component: infoEdit},
+      { path: '/infoShow', component: infoShow},
+      // { path: '/listButton', component: listButton},
+      // { path: '/box1', component: box1},
+      // { path: '/barrage', component: barrage}
+    ]
+
+    // 3. 创建 router 实例，然后传 `routes` 配置
+    // 你还可以传别的配置参数, 不过先这么简单着吧。
+    var router = new VueRouter({
+       routes: routes // routes(缩写) 相当于 routes: routes
+    })
+
+    // 4. 创建和挂载根实例。
+    // 记得要通过 router 配置参数注入路由，
+    // 从而让整个应用都有路由功能
+    var app = new Vue({
+      router
+    }).$mount('#app')
+
+    // 现在，应用已经启动了！
+</script>
+</body>
+</html>

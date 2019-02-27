@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>条件循环渲染</title>
+	<script src="lib/vue-2.4.2.js"></script>
+	<link rel="stylesheet" href="css/common.css">
+	<style>
+	ul{
+		margin-top: 20px;
+		margin-left: 20px;
+	}
+	.listItem{
+		line-height: 30px;padding-left: 20px;
+		border: 1px solid #efefef;
+		border-bottom: 0;
+		width: 300px;
+		color:#666;
+		transition: all .2s;
+		box-sizing: border-box;
+	}	
+
+	.listItem.selected{
+		padding-left:23px;
+		box-shadow: 2px 3px 10px -3px #ccc inset;
+	}
+	.listItem.checked{
+		padding-left:25px;
+		border-left:3px solid red;
+	}
+	.listItem:hover{
+		/*background-color: #999;*/
+	}
+	.listItem:last-child{
+		border-bottom:1px solid #efefef;
+	}
+	.spanFade-enter-active, .spanFade-leave-active {
+	  transition: opacity .5s
+	}
+	.spanFade-enter, .spanFade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
+	  opacity: 0
+	}
+	</style>
+</head>
+<body>
+<div ><a class="backBtn" href="/">返回</a></div>
+<div id="app">
+	<div class="title">条件渲染测试</div>
+	<ul>
+		<li>多选</li>
+		<li class="listItem" v-for="(value,index) in textList" @click="value.selected=!value.selected" v-if="value.show" v-bind:class="{checked:value.selected}" >{{value.name}}</li>
+	</ul>
+	<p>选中的多选项：
+		<transition name="spanFade" v-for="(value,index) in textList" v-if="value.selected">
+			<span >{{value.name}},</span>
+		</transition>
+	</p>
+
+	<ul>
+		<li>单选</li>
+		<li class="listItem" v-for="(value,index) in textList" @click="radioSelected=index" v-if="value.show" v-bind:class="{selected:index==radioSelected}" >{{value.name}}</li>
+	</ul>
+	<p>选中的单选项：
+		<transition name="spanFade" >
+			<span >{{textList[radioSelected].name}},</span>
+		</transition>
+	</p>
+		
+	
+</div>
+
+<script>
+	var vm = new Vue({
+		el:'#app',
+		data:{
+			text:'hello',
+			textList:[
+				{name:"name1",show:true,selected:false},
+				{name:"name2",show:true,selected:false},
+				{name:"name3",show:true,selected:false},
+			],
+			radioSelected:1,
+		},
+		methods:function(){
+
+		}
+
+	})
+</script>
+</body>
+</html>

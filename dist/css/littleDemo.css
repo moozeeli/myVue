@@ -1,0 +1,131 @@
+.table, .table th, .table td {
+  border-collapse: collapse;
+  border: 1px solid #eaeaea; }
+
+body {
+  margin-top: 50px; }
+
+[v-cloak] {
+  display: none; }
+
+.container {
+  width: 80%;
+  margin: 0 auto; }
+
+.tableWrap {
+  min-height: 500px; }
+
+.table {
+  color: #333;
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #eaeaea; }
+  .table .tr.active {
+    background: red; }
+  .table th {
+    background: #eaeaea;
+    border: 1px solid #eaeaea;
+    height: 33px;
+    font-size: 15px;
+    color: #666;
+    font-weight: normal;
+    border-right: 1px solid white; }
+    .table th:last-child {
+      border-right-color: #eaeaea; }
+  .table td {
+    padding: 3px  6px;
+    vertical-align: middle;
+    text-align: center; }
+
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8); }
+  .modal .modalDialog {
+    width: 350px;
+    margin: 0 auto;
+    transform: translateY(50%);
+    background: white;
+    border-radius: 5px; }
+    .modal .modalDialog .modalHead {
+      height: 40px;
+      padding-left: 20px;
+      color: white;
+      line-height: 40px;
+      font-size: 16px;
+      background: #28AEE2;
+      border-radius: 5px 5px 0 0; }
+    .modal .modalDialog .modalContent {
+      padding: 20px;
+      height: 180px;
+      width: 100%;
+      box-sizing: border-box; }
+    .modal .modalDialog .modalBottom {
+      padding: 10px; }
+
+.delBtn {
+  border: 0;
+  color: white;
+  padding: 4px  10px;
+  border-radius: 3px;
+  background-color: #F75C5C;
+  cursor: pointer;
+  user-select: none;
+  outline: none; }
+
+.optionButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px; }
+  .optionButton .btn {
+    outline: none;
+    border: 0;
+    display: block;
+    padding: 6px  10px;
+    background: #ccc;
+    color: white;
+    border-radius: 3px;
+    font-size: 13px;
+    margin: 0 4px;
+    cursor: pointer; }
+  .optionButton .btn.blue {
+    background: #28AEE2; }
+  .optionButton .btn.red {
+    background: #F75C5C; }
+
+.delBtn::selection {
+  background-color: #5a5a5a; }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s; }
+
+.fade-enter, .fade-leave-to {
+  opacity: 0; }
+
+.row {
+  height: 40px;
+  max-width: 340px;
+  margin: 0 auto;
+  line-height: 40px;
+  color: #666; }
+  .row span.left {
+    display: inline-block;
+    min-width: 60px;
+    max-width: 100px;
+    text-align: right;
+    margin-right: 10px; }
+  .row input.right {
+    display: inline-block;
+    border-radius: 2px;
+    padding: 0 6px;
+    border: 1px solid #ccc;
+    height: 30px;
+    outline: none;
+    box-sizing: border-box; }
+  .row input.right.warn {
+    border-color: red; }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>this is array test</title>
+	<style>
+		body{padding: 0;margin: 0;}
+		ul,li{list-style: none; padding: 0;margin: 0;}
+		.myul{line-height: 30px;overflow: hidden;margin-top:20px;}
+		.myul>li{
+			border:1px solid #ccc;
+			width:150px;
+			text-align: center;
+			margin:0 3px ;
+			font-size:13px;
+			color:#848484;
+			border-radius:5px;
+			float: left;
+		}
+		.myul>li:hover{
+			color:#ff9090;
+			border-color:#ff9090;
+		}
+		[v-cloak]{display: none; }
+	</style>
+</head>
+<body>
+	<div id="vueapp" v-cloak>
+		<ul class="myul">
+			<li v-for="(item,index) in list" @click="changeName(index)">{{item.name}}</li>
+		</ul>
+		
+	</div>
+	<script src="js/vue-v2.5.13.js"></script>
+	<script>
+		var app = new Vue({
+			el:"#vueapp",
+			data:{
+				list:[
+					{name:'123',key:0},
+					{name:'123',key:1},
+					{name:'123',key:2},
+					{name:'123',key:3},
+				]
+
+			},
+			methods:{
+				changeName:function (index) {
+					this.list[index].name = "您点击了";
+				}
+			}
+		})
+	</script>
+	
+</body>
+</html>
