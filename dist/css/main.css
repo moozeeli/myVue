@@ -1,0 +1,265 @@
+@charset "UTF-8";
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  padding: 0;
+  margin: 0; }
+
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+a {
+  font-size: 14x;
+  text-decoration: none;
+  color: inherit; }
+
+[v-cloak] {
+  display: none; }
+
+.container {
+  padding: 20px;
+  margin: 40px 20px;
+  border: 1px solid #eaeaea; }
+
+ul.nav {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 1; }
+  ul.nav > li {
+    padding: 0 10px;
+    border-right: 1px solid #eaeaea;
+    text-align: center;
+    font-size: 14px;
+    color: #2dc0fb; }
+  ul.nav > li:last-child {
+    border-right: none; }
+  ul.nav .router-link-active,
+  ul.nav > li:hover {
+    text-decoration: underline; }
+
+.optionButton {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px; }
+  .optionButton .btn {
+    outline: none;
+    border: 0;
+    display: block;
+    padding: 6px 10px;
+    background: #ccc;
+    color: white;
+    border-radius: 3px;
+    font-size: 13px;
+    margin: 0 4px;
+    cursor: pointer; }
+  .optionButton .btn.blue {
+    background: #2dc0fb; }
+  .optionButton .btn.red {
+    background: #ffa1a1; }
+
+.delBtn,
+.editBtn,
+.blueBtn {
+  border: 0;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 3px;
+  background-color: #ffa1a1;
+  cursor: pointer;
+  user-select: none;
+  outline: none; }
+
+.editBtn, .blueBtn {
+  background-color: #2dc0fb; }
+
+.delBtn::selection,
+.editBtn::selection,
+.blueBtn::selection {
+  background-color: #5a5a5a; }
+
+.greenBtn {
+  background: #42c77f;
+  border: 0px;
+  color: white;
+  padding: 2px 10px;
+  margin-left: 10px;
+  border-radius: 2px;
+  outline: none;
+  min-height: 24px; }
+
+.table,
+.table th,
+.table td {
+  border-collapse: collapse;
+  border: 1px solid #eaeaea; }
+
+.table {
+  color: #333;
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #eaeaea; }
+  .table .tr.active {
+    background: red; }
+  .table th {
+    background: #eaeaea;
+    border: 1px solid #eaeaea;
+    height: 33px;
+    font-size: 15px;
+    color: #666;
+    font-weight: normal;
+    border-right: 1px solid white; }
+    .table th:last-child {
+      border-right-color: #eaeaea; }
+  .table td {
+    padding: 3px 6px;
+    vertical-align: middle;
+    text-align: center; }
+
+.row {
+  height: 40px;
+  max-width: 340px;
+  margin: 0 auto;
+  line-height: 40px;
+  color: #666; }
+  .row span.left {
+    display: inline-block;
+    min-width: 60px;
+    max-width: 100px;
+    text-align: right;
+    margin-right: 10px; }
+  .row input.right {
+    display: inline-block;
+    border-radius: 2px;
+    padding: 0 6px;
+    border: 1px solid #ccc;
+    height: 30px;
+    outline: none;
+    box-sizing: border-box; }
+  .row input.right.warn {
+    border-color: red; }
+
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3); }
+  .modal .modalDialog {
+    width: 350px;
+    margin: 0 auto;
+    transform: translateY(50%);
+    background: white;
+    border-radius: 5px; }
+    .modal .modalDialog .modalHead {
+      height: 40px;
+      padding-left: 20px;
+      color: white;
+      line-height: 40px;
+      font-size: 16px;
+      background: #28AEE2;
+      border-radius: 5px 5px 0 0; }
+    .modal .modalDialog .modalContent {
+      padding: 20px;
+      height: 180px;
+      width: 100%;
+      box-sizing: border-box; }
+    .modal .modalDialog .modalBottom {
+      padding: 10px; }
+
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-fade-enter-active {
+  transition: all .3s ease; }
+
+.slide-fade-leave-active {
+  transition: all .3s ease; }
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(430px); }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .3s; }
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0; }
+
+.box {
+  border: 1px solid #eaeaea;
+  height: 200px;
+  min-width: 30px;
+  max-width: 400px;
+  margin: 20px auto; }
+  .box .box-list {
+    overflow: hidden; }
+  .box .box-menuItem {
+    float: left;
+    text-align: center;
+    padding: 5px 0;
+    width: 100px;
+    background-color: #eaeaea;
+    user-select: none;
+    cursor: pointer; }
+  .box .box-menuItem.active {
+    color: white;
+    background: #565656; }
+
+.myul {
+  line-height: 30px;
+  overflow: hidden;
+  margin-top: 20px; }
+  .myul > li {
+    border: 1px solid #ccc;
+    width: 150px;
+    text-align: center;
+    margin: 0 3px;
+    font-size: 13px;
+    color: #848484;
+    border-radius: 5px;
+    float: left; }
+  .myul > li:hover {
+    color: #ff9090;
+    border-color: #ff9090; }
+
+.vuePropsTips {
+  background: #fffec5;
+  text-align: left;
+  color: #666;
+  height: 59px;
+  width: 400px;
+  position: fixed;
+  top: 23px;
+  right: 41px;
+  border: 1px solid #f5f4bd;
+  border-radius: 2px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  font-size: 14px;
+  box-shadow: 0px 2px 8px -3px rgba(0, 0, 0, 0.2); }
+
+.closeTipsIcon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #ff7575;
+  display: block;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  line-height: 20px;
+  cursor: default; }
+
+.closeTipsIcon:hover {
+  text-shadow: 0 0px 4px #ff9f9f; }
