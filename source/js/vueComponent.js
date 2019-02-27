@@ -115,7 +115,7 @@ Vue.component('todo-item',{
 				default:0
 			}
 		},
-		template:'<li>{{todo}}  点击了{{mycount}}次<button class="buttonStyle" @click="mycount+=1">按钮计数</button></li>',
+	template:'<li>{{todo}}  点击了{{mycount}}次<button class="greenBtn" @click="mycount+=1">按钮计数</button></li>',
 		data:function(){
 			return {
 				mycount:this.count,
@@ -209,14 +209,24 @@ var componentTest = {
 
 let lt_modal = {
 	props:{
+		editdata:{
+			default(){
+				return {};
+			},
+			type:Object
+		},	
 		value:{
 			default:false,
 			type:Boolean
-		}		
+		},
+		title:{
+			default:"编辑",
+			type:String
+		}	
 	},
 	template:`<div class="modal" v-if="value"> 
 					<div class="modalDialog">			
-						<div class="modalHead">新增</div>
+						<div class="modalHead">{{myTitle}}</div>
 						<div class="modalContent">			
 								<p class="row"><span class="left">name :</span> <input class="right" v-model.trim="newPerson.name" type="text"> </p>
 								<p class="row"><span class="left">age :</span> <input class="right"  v-model.number ="newPerson.age" type="text"> </p>
@@ -233,10 +243,11 @@ let lt_modal = {
 	`,
 	data(){
 		return{
+			myTitle:this.title,
 			newPerson: {
-				name: '',
-				age: '',
-				sex: '',
+				name: this.editdata.name||'',
+				age: this.editdata.age ||'',
+				sex: this.editdata.sex ||'',
 			},
 		}
 	},
@@ -262,13 +273,25 @@ let lt_modal = {
 				sex: ''
 			}
 		}
+	},
+	watch:{
+		title: function (newVal,oldVal) {
+			this.myTitle = newVal;
+		},
+		editdata: function (newVal, oldVal)  {
+			this.newPerson = {
+				name: newVal.name,
+				age: newVal.age,
+				sex: newVal.sex
+			}		
+		}
 	}
 }
 
 let lt_table = {
 	template: `<div class="container">
 					<transition name="fade"> 
-					 <lt_modal v-model="isModelShow" @on-hidemodal="hideModal" @on-ok="addPerson"></lt_modal>						
+					 <lt_modal :title="modelTitle" v-model="isModelShow" :editdata="editdata" @on-hidemodal="hideModal" @on-ok="addPerson"></lt_modal>						
 					</transition>
 					<div class="optionButton">
 						<button class="btn" @click="showAddModal">新增</button>
@@ -287,13 +310,16 @@ let lt_table = {
 								<td>{{ value.name }}</td>
 								<td>{{ value.age }}</td>
 								<td>{{ value.sex }}</td>
-								<td><button unselectable="on" class="delBtn" v-on:click="delThis(key)">del</button></td>
+								<td>
+								    <button unselectable="on" class="editBtn" v-on:click="editThis(key)">edit</button>
+									<button unselectable="on" class="delBtn" v-on:click="delThis(key)">del</button>
+								</td>
 							</tr>
 						</template>
 						<template v-else>
 							<tr height="300">
 								<td colspan="4">暂无数据</td>
-							</tr>			
+							</tr>
 						</template>
 					</table>
 				</div>`,	
@@ -301,6 +327,8 @@ let lt_table = {
 		return {
 			tableData: [],			
 			isModelShow: false,
+			editdata:{},
+			modelTitle:"--"
 		}
 	},
 	components:{
@@ -311,13 +339,28 @@ let lt_table = {
 			if (typeof key == 'number') {
 				this.tableData.splice(key, 1);
 			} else {
-				alert('meiyou key')
+				console.error('lost key');
 			}
+		},
+		editThis(key){
+			this.modelTitle = "编辑";
+			console.log(key);
+			if (typeof key == 'number') {
+				this.editdata = {
+					name: this.tableData[key].name,
+					age: this.tableData[key].name,
+					sex: this.tableData[key].name
+				}
+				this.isModelShow=true;				
+			} else {
+				alert('meiyou key')
+			}			
 		},
 		hideModal:function () {
 			this.isModelShow=false;
 		},
 		showAddModal() {
+			this.modelTitle = "新增";
 			this.isModelShow = true;
 		},
 		addPerson: function (newPerson) {
@@ -348,10 +391,8 @@ let lt_table = {
 	},
 	updated: function () { // 数据更新后保存到localStroage
 		localStorage.setItem("tableData", JSON.stringify(this.tableData));
-	}
-	
+	}	
 }
-
 
 let simpleCrm = {
 	template :`<div>

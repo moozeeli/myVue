@@ -1,14 +1,4 @@
-.delBtn {
-    border: 0;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 3px;
-    background-color: #F75C5C;
-    cursor: pointer;
-    user-select: none; // 无法选中文字
-    outline: none;
-}
-
+@import "var";
 .optionButton {
     display: flex;
     justify-content: flex-end;
@@ -26,15 +16,41 @@
         cursor: pointer;
     }
     .btn.blue {
-        background: #28AEE2;
+        background: $blue;
         ;
     }
     .btn.red {
-        background: #F75C5C;
-        ;
+        background: $red;
     }
 }
 
-.delBtn::selection {
+.delBtn,
+.editBtn {
+    border: 0;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 3px;
+    background-color: $red;
+    cursor: pointer;
+    user-select: none; // 无法选中文字
+    outline: none;
+}
+
+.editBtn {
+    background-color: $blue;
+}
+
+.delBtn::selection,
+.editBtn::selection {
     background-color: #5a5a5a;
+}
+
+.greenBtn {
+    background: $green;
+    border: 0px;
+    color: white;
+    padding: 2px 6px;
+    margin-left: 10px;
+    border-radius: 2px;
+    outline: none;
 }

@@ -1,0 +1,19 @@
+ul.nav {
+    display: flex;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    &>li {
+        padding: 0 10px;
+        border-right: 1px solid #eaeaea;
+        text-align: center;
+        font-size: 14px;
+        color: $blue;
+    }
+    &>li:last-child {
+        border-right: none;
+    }
+    .router-link-active,
+    &>li:hover {
+        text-decoration: underline;
+    }
+}
