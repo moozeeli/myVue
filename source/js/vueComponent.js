@@ -207,28 +207,71 @@ var componentTest = {
 }
 
 
+let lt_modal = {
+	props:{
+		value:{
+			default:false,
+			type:Boolean
+		}		
+	},
+	template:`<div class="modal" v-if="value"> 
+					<div class="modalDialog">			
+						<div class="modalHead">新增</div>
+						<div class="modalContent">			
+								<p class="row"><span class="left">name :</span> <input class="right" v-model.trim="newPerson.name" type="text"> </p>
+								<p class="row"><span class="left">age :</span> <input class="right"  v-model.number ="newPerson.age" type="text"> </p>
+								<p class="row"><span class="left">sex :</span> <input class="right"  v-model="newPerson.sex" type="text"> </p>
+						</div>
+						<div class="modalBottom">
+							<div class="optionButton">
+								<button id="add" class="btn blue" @click="submit" @keyup="submit">确定</button>
+								<button class="btn blue" @click="hideModal">取消</button> 
+							</div>
+						</div>
+					</div>
+				</div>  
+	`,
+	data(){
+		return{
+			newPerson: {
+				name: '',
+				age: '',
+				sex: '',
+			},
+		}
+	},
+	methods:{
+		hideModal(){
+			this.clear();
+			this.$emit("on-hidemodal");
+		},
+		submit(){
+			// 验证
+			let a = { 
+				name: this.newPerson.name,
+				age: this.newPerson.age,
+				sex: this.newPerson.sex,
+			 }
+			this.$emit("on-ok", a);
+			this.clear();
+		},
+		clear(){
+			this.newPerson = {
+				name: '',
+				age: '',
+				sex: ''
+			}
+		}
+	}
+}
+
 let lt_table = {
 	template: `<div class="container">
-					<transition name="fade">     
-						<div class="modal" v-show="addShow"> <!-- add Modal -->
-							<div class="modalDialog">			
-								<div class="modalHead">新增</div>
-								<div class="modalContent">			
-										<p class="row"><span class="left">name :</span> <input class="right" v-model.trim="newPerson.name" type="text"> </p>
-										<p class="row"><span class="left">age :</span> <input class="right"  v-model.number ="newPerson.age" type="text"> </p>
-										<p class="row"><span class="left">sex :</span> <input class="right"  v-model="newPerson.sex" type="text"> </p>
-								</div>
-								<div class="modalBottom">
-									<div class="optionButton">
-										<button id="add" class="btn blue" @click="addPerson">确定</button>
-										<button class="btn blue" @click="addShow=false">取消</button> 
-									</div>
-								</div>
-							</div>
-						</div>  <!-- add Modal--End -->
+					<transition name="fade"> 
+					 <lt_modal v-model="isModelShow" @on-hidemodal="hideModal" @on-ok="addPerson"></lt_modal>						
 					</transition>
 					<div class="optionButton">
-						<button id="add" class="btn" @click="addShow=true">新增</button>
+						<button class="btn" @click="showAddModal">新增</button>
 						<button class="btn blue" @click="save"> 保存</button> 
 						<button class="btn red" @click="delAll"> 删除全部</button> 
 					</div>
@@ -256,14 +299,12 @@ let lt_table = {
 				</div>`,	
 	data() {
 		return {
-			tableData: [],
-			newPerson: {
-				name: '',
-				age: '',
-				sex: '',
-			},
-			addShow: false,
+			tableData: [],			
+			isModelShow: false,
 		}
+	},
+	components:{
+		lt_modal: lt_modal
 	},
 	methods: {
 		delThis: function (key) {
@@ -273,14 +314,22 @@ let lt_table = {
 				alert('meiyou key')
 			}
 		},
-		addPerson: function () {
-			if (this.newPerson.name == '' || this.newPerson.age == '' || this.newPerson.sex == '') {
+		hideModal:function () {
+			this.isModelShow=false;
+		},
+		showAddModal() {
+			this.isModelShow = true;
+		},
+		addPerson: function (newPerson) {
+			if (newPerson.name == '' || newPerson.age == '' || newPerson.sex == '') {
 				alert('没有输入正确')
 			} else {
+				this.tableData.push(newPerson);
+				newPerson.name == '' ;
+				newPerson.age == '' ;
+				newPerson.sex == '';
 
-				this.tableData.push(this.newPerson);
-				this.newPerson = { name: '', age: '', sex: '' };
-				this.addShow = false;
+				this.isModelShow = false;
 			}
 		},
 		save: function () {
@@ -298,7 +347,6 @@ let lt_table = {
 		}
 	},
 	updated: function () { // 数据更新后保存到localStroage
-		console.count('updated');
 		localStorage.setItem("tableData", JSON.stringify(this.tableData));
 	}
 	
