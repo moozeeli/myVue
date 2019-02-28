@@ -1,9 +1,9 @@
 
-var  listButton = {
-	template:`<ul class="myul">
+var listButton = {
+	template: `<ul class="myul">
 				<li v-for="(item,index) in list" @click="changeName(index)">{{item.name}}</li>
 			</ul>`,
-	data(){
+	data() {
 		return {
 			list: [
 				{ name: '123', key: 0 },
@@ -22,27 +22,27 @@ var  listButton = {
 }
 
 var infoEdit = {
-	template:`<div class="container">
+	template: `<div class="container">
 						<button class="blueBtn" @click="goBack">返回</button> 
 						<form>
 							<label>输入姓名：<input v-model="name" id="name"/></label>		
 							<button @click="submit" class="greenBtn">完成</button>					
 						</form>
 				</div>`,
-	created:function(){
+	created: function () {
 
 	},
-	data(){
-		return{
-			name:""
+	data() {
+		return {
+			name: ""
 		}
 	},
-	methods:{
-		goBack () {
-	      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
+	methods: {
+		goBack() {
+			window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');
 		},
-		submit(){
-			let that  = this;
+		submit() {
+			let that = this;
 			this.$router.push(`/infoShow/${encodeURIComponent(that.name)}`);
 		}
 	}
@@ -56,9 +56,9 @@ var infoShow = {
 	created: function () {
 
 	},
-	data(){
-		return{
-			name: this.$route.params.name||"--"
+	data() {
+		return {
+			name: this.$route.params.name || "--"
 		}
 	},
 	methods: {
@@ -71,7 +71,7 @@ var infoShow = {
 
 
 var tabBox = {
-	template:`<div class="box">    
+	template: `<div class="box">    
 				<ul class='box-list'>
 					<li class="box-menuItem"
 						v-for="(value,key) in list"
@@ -81,7 +81,7 @@ var tabBox = {
 				</ul>
 				<p class='content'> 您点击了：{{list[activeIndex].text}}</p>
 			</div>`,
-	data(){
+	data() {
 		return {
 			list: [
 				{ text: 'item1', isActive: true },
@@ -89,7 +89,7 @@ var tabBox = {
 				{ text: 'item3', isActive: false },
 				{ text: 'item4', isActive: false }
 			],
-			activeIndex:0,
+			activeIndex: 0,
 			text: "item1"
 		}
 	},
@@ -102,103 +102,135 @@ var tabBox = {
 			this.list[key].isActive = true;
 			this.text = this.list[key].text;
 		}
-	}   
+	}
 }
 
 
-Vue.component('todo-item',{	
-		props:{
-			todo:{
-				type:String,
-				default:""
-			},
-			count:{
-				type:Number,
-				default:0
-			}
+Vue.component('todo-item', {
+	props: {
+		count: {
+			type: Number,
+			default: 0
 		},
-	template:'<li>{{todo}}  点击了{{mycount}}次<button class="greenBtn" @click="mycount+=1">按钮计数</button></li>',
-		data:function(){
-			return {
-				mycount:this.count,
-			}
+		index: {
+			type: Number,
+			required: true
 		}
-		
-	});
+	},
+	template:`<li>  				
+				<slot name="info"></slot>
+				<button class="greenBtn" @click="doClick">完成</button>
+			</li>`,
+	data: function () {return{}},
+	methods: {
+		doClick() {
+			console.log("父组件标题（使用父链引用）："+this.$parent.message);
+			this.$emit("update-data", { index: this.index, count: this.count + 1 });
+		}
+	}
+});
 
-var  todolist = {
-	template:`<div class="container">	
+var todolist = {
+	//  因为是在字符串模版中引用了 <todo-item>组件，所以 其 props toDo 可以不用转换为小写
+	template: `<div class="container">	
 					<h4>{{message}}</h4>
-					<p class='tips'>todo-item组件</p>
+					<p class='tips'>待办列表</p>					
 					<ul>
-						<todo-item v-for="value in array" :key='value.text' :count="value.count" :todo="value.text" ></todo-item>
+						<todo-item
+							style="margin-bottom:2px"
+							v-for="(value,index) in array" 
+							:index="index" 
+							:key='value.text' 
+							:count="value.doneCount" 		
+							:score="value.score"
+							@update-data = "updateCount"
+						 >
+						 <P slot="info" style="display:inline-block;width:200px">{{value.text}}  完成{{value.doneCount}}次，奖励{{value.score}}积分 </p>
+						 </todo-item>
 					</ul>
+					<p>共计：{{sumCount}}积分</p>
 				</div>`,
-	data:function(){
-		return{
-			message:'todo-item 小案例',
-			array:[
-				{text:'早起',count:12},
-				{text:'早餐',count:13},
-				{text:'运动',count:14},
-				{text:'洒扫',count:15},
-				{text:'养生',count:16}
+	data: function () {
+		return {
+			message: 'todo-item 小案例',
+			array: [
+				{ text: '早起', doneCount: 0, accumulator: 5, score: 0 },
+				{ text: '早餐', doneCount: 0, accumulator: 2, score: 0},
+				{ text: '运动', doneCount: 0, accumulator: 1, score: 0},
+				{ text: '洒扫', doneCount: 0, accumulator: 3, score: 0},
+				{ text: '养生', doneCount: 0, accumulator: 1, score: 0}
+				// 描述，完成次数, 累加，分数
 			],
+		}
+	},
+	methods:{
+		updateCount(payload){
+			let item = this.array[payload.index];
+			item.doneCount = payload.count;
+			item.score = payload.count * item.accumulator;
+		}
+	},
+	computed: {
+		sumCount: function () {
+			let result = 0;
+			this.array.map(function (value, index, arr) {
+				result += value.score;
+			})
+			return result;
 		}
 	}
 };
 
-Vue.component('vue-props-tips',{	
-		props:{
-			content:{
-				type:String,
-				default:"信息提示"
-			},
-			tipsShow:{
-				type:Boolean,
-				default:false
-			},
-			value:{
-				type:Boolean,
-				default:false
-			}
+Vue.component('vue-props-tips', {
+	props: {
+		content: {
+			type: String,
+			default: "信息提示"
 		},
-		template:'<transition name="slide-fade"><div class="vuePropsTips" v-if="value">{{content}}\
+		tipsShow: {
+			type: Boolean,
+			default: false
+		},
+		value: {
+			type: Boolean,
+			default: false
+		}
+	},
+	template: '<transition name="slide-fade"><div class="vuePropsTips" v-if="value">{{content}}\
 					<span class="closeTipsIcon" @click="closeIips" >X</span>\
 				</div></transition>',
-		data:function(){
-			return {}
-		},
-		methods:{
-			closeIips:function(){
-				this.$emit("close"); // 组件中注册close事件，修改data,关闭通知
-				console.log(this.$route);
-			}
+	data: function () {
+		return {}
+	},
+	methods: {
+		closeIips: function () {
+			this.$emit("close"); // 组件中注册close事件，修改data,关闭通知
+			console.log(this.$route);
 		}
-		
-	});
+	}
+});
 
 
 
 
 let lt_modal = {
-	props:{
-		editdata:{
-			default(){
+	props: {
+		editdata: {
+			default() {
 				return {};
 			},
-			type:Object
-		},	
-		value:{
-			default:false,
-			type:Boolean
+			type: Object
 		},
-		title:{
-			default:"编辑",
-			type:String
-		}	
+		value: {
+			default: false,
+			type: Boolean
+		},
+		title: {
+			default: "编辑",
+			type: String
+		}
 	},
-	template:`<div class="modal" v-if="value"> 
+	template: `<div class="modal" v-if="value"> 
 					<div class="modalDialog">			
 						<div class="modalHead">{{myTitle}}</div>
 						<div class="modalContent">			
@@ -215,32 +247,32 @@ let lt_modal = {
 					</div>
 				</div>  
 	`,
-	data(){
-		return{
-			myTitle:this.title,
+	data() {
+		return {
+			myTitle: this.title,
 			newPerson: {
-				name: this.editdata.name||'',
-				age: this.editdata.age ||'',
-				sex: this.editdata.sex ||'',
+				name: this.editdata.name || '',
+				age: this.editdata.age || '',
+				sex: this.editdata.sex || '',
 			},
 		}
 	},
-	methods:{
-		hideModal(){
+	methods: {
+		hideModal() {
 			this.clear();
 			this.$emit("on-hidemodal");
 		},
-		submit(){
+		submit() {
 			// 验证
-			let a = { 
+			let a = {
 				name: this.newPerson.name,
 				age: this.newPerson.age,
 				sex: this.newPerson.sex,
-			 }
+			}
 			this.$emit("on-ok", a);
 			this.clear();
 		},
-		clear(){
+		clear() {
 			this.newPerson = {
 				name: '',
 				age: '',
@@ -248,16 +280,16 @@ let lt_modal = {
 			}
 		}
 	},
-	watch:{
-		title: function (newVal,oldVal) {
+	watch: {
+		title: function (newVal, oldVal) {
 			this.myTitle = newVal;
 		},
-		editdata: function (newVal, oldVal)  {
+		editdata: function (newVal, oldVal) {
 			this.newPerson = {
 				name: newVal.name,
 				age: newVal.age,
 				sex: newVal.sex
-			}		
+			}
 		}
 	}
 }
@@ -296,16 +328,16 @@ let lt_table = {
 							</tr>
 						</template>
 					</table>
-				</div>`,	
+				</div>`,
 	data() {
 		return {
-			tableData: [],			
+			tableData: [],
 			isModelShow: false,
-			editdata:{},
-			modelTitle:"--"
+			editdata: {},
+			modelTitle: "--"
 		}
 	},
-	components:{
+	components: {
 		lt_modal: lt_modal
 	},
 	methods: {
@@ -317,7 +349,7 @@ let lt_table = {
 				console.error('lost key');
 			}
 		},
-		editThis(key){
+		editThis(key) {
 			this.modelTitle = "编辑";
 			console.log(key);
 			if (typeof key == 'number') {
@@ -326,13 +358,13 @@ let lt_table = {
 					age: this.tableData[key].name,
 					sex: this.tableData[key].name
 				}
-				this.isModelShow=true;				
+				this.isModelShow = true;
 			} else {
 				alert('meiyou key')
-			}			
+			}
 		},
-		hideModal:function () {
-			this.isModelShow=false;
+		hideModal: function () {
+			this.isModelShow = false;
 		},
 		showAddModal() {
 			this.modelTitle = "新增";
@@ -343,8 +375,8 @@ let lt_table = {
 				alert('没有输入正确')
 			} else {
 				this.tableData.push(newPerson);
-				newPerson.name == '' ;
-				newPerson.age == '' ;
+				newPerson.name == '';
+				newPerson.age == '';
 				newPerson.sex == '';
 
 				this.isModelShow = false;
@@ -366,21 +398,21 @@ let lt_table = {
 	},
 	updated: function () { // 数据更新后保存到localStroage
 		localStorage.setItem("tableData", JSON.stringify(this.tableData));
-	}	
+	}
 }
 
 let simpleCrm = {
-	template :`<div>
+	template: `<div>
 					<lt_table @on-deleterecord="deleteRecord"></lt_table>
 					<button class="greenBtn" @click='showTips()'>显示tips</button>
 					<button class="greenBtn" @click='toEdit()'>toEdit</button>
 					<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
 				</div>`,
-	components:{
+	components: {
 		lt_table: lt_table
 	},
-	data(){
-		return{
+	data() {
+		return {
 			textContent: '消息提示测试内容123',
 			tipsShow: false,
 		}
@@ -390,12 +422,12 @@ let simpleCrm = {
 			this.tipsShow = true;
 			this.textContent = "tips 显示测试"
 		},
-		deleteRecord(){
+		deleteRecord() {
 			this.tipsShow = true;
 			this.textContent = "删除一条记录！"
 		},
-		toEdit(){
+		toEdit() {
 			this.$router.push("/infoEdit");
 		}
-	}	
+	}
 }

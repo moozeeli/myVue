@@ -76,31 +76,53 @@ var tabBox = {
 
 Vue.component('todo-item', {
 	props: {
-		todo: {
-			type: String,
-			default: ""
-		},
 		count: {
 			type: Number,
 			default: 0
+		},
+		index: {
+			type: Number,
+			required: true
 		}
 	},
-	template: '<li>{{todo}}  点击了{{mycount}}次<button class="greenBtn" @click="mycount+=1">按钮计数</button></li>',
+	template: '<li>  \t\t\t\t\n\t\t\t\t<slot name="info"></slot>\n\t\t\t\t<button class="greenBtn" @click="doClick">\u5B8C\u6210</button>\n\t\t\t</li>',
 	data: function data() {
-		return {
-			mycount: this.count
-		};
+		return {};
+	},
+	methods: {
+		doClick: function doClick() {
+			console.log("父组件标题（使用父链引用）：" + this.$parent.message);
+			this.$emit("update-data", { index: this.index, count: this.count + 1 });
+		}
 	}
-
 });
 
 var todolist = {
-	template: '<div class="container">\t\n\t\t\t\t\t<h4>{{message}}</h4>\n\t\t\t\t\t<p class=\'tips\'>todo-item\u7EC4\u4EF6</p>\n\t\t\t\t\t<ul>\n\t\t\t\t\t\t<todo-item v-for="value in array" :key=\'value.text\' :count="value.count" :todo="value.text" ></todo-item>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>',
+	//  因为是在字符串模版中引用了 <todo-item>组件，所以 其 props toDo 可以不用转换为小写
+	template: '<div class="container">\t\n\t\t\t\t\t<h4>{{message}}</h4>\n\t\t\t\t\t<p class=\'tips\'>\u5F85\u529E\u5217\u8868</p>\t\t\t\t\t\n\t\t\t\t\t<ul>\n\t\t\t\t\t\t<todo-item\n\t\t\t\t\t\t\tstyle="margin-bottom:2px"\n\t\t\t\t\t\t\tv-for="(value,index) in array" \n\t\t\t\t\t\t\t:index="index" \n\t\t\t\t\t\t\t:key=\'value.text\' \n\t\t\t\t\t\t\t:count="value.doneCount" \t\t\n\t\t\t\t\t\t\t:score="value.score"\n\t\t\t\t\t\t\t@update-data = "updateCount"\n\t\t\t\t\t\t >\n\t\t\t\t\t\t <P slot="info" style="display:inline-block;width:200px">{{value.text}}  \u5B8C\u6210{{value.doneCount}}\u6B21\uFF0C\u5956\u52B1{{value.score}}\u79EF\u5206 </p>\n\t\t\t\t\t\t </todo-item>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<p>\u5171\u8BA1\uFF1A{{sumCount}}\u79EF\u5206</p>\n\t\t\t\t</div>',
 	data: function data() {
 		return {
 			message: 'todo-item 小案例',
-			array: [{ text: '早起', count: 12 }, { text: '早餐', count: 13 }, { text: '运动', count: 14 }, { text: '洒扫', count: 15 }, { text: '养生', count: 16 }]
+			array: [{ text: '早起', doneCount: 0, accumulator: 5, score: 0 }, { text: '早餐', doneCount: 0, accumulator: 2, score: 0 }, { text: '运动', doneCount: 0, accumulator: 1, score: 0 }, { text: '洒扫', doneCount: 0, accumulator: 3, score: 0 }, { text: '养生', doneCount: 0, accumulator: 1, score: 0
+				// 描述，完成次数, 累加，分数
+			}]
 		};
+	},
+	methods: {
+		updateCount: function updateCount(payload) {
+			var item = this.array[payload.index];
+			item.doneCount = payload.count;
+			item.score = payload.count * item.accumulator;
+		}
+	},
+	computed: {
+		sumCount: function sumCount() {
+			var result = 0;
+			this.array.map(function (value, index, arr) {
+				result += value.score;
+			});
+			return result;
+		}
 	}
 };
 
@@ -131,7 +153,6 @@ Vue.component('vue-props-tips', {
 			console.log(this.$route);
 		}
 	}
-
 });
 
 var lt_modal = {
