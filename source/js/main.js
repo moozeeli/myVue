@@ -401,18 +401,103 @@ let lt_table = {
 	}
 }
 
+
+
+function isNumber(value) {
+	var patrn = /^(-)?\d+(\.\d+)?$/;
+	if (patrn.exec(value) == null || value == "") {
+		return false
+	} else {
+		return true
+	}
+}
+
+let inputNumber = {
+	props: {
+		value: {
+			type: Number,
+			required: true
+		},
+		maxVal:{
+			type:Number,
+			default:Infinity			
+		},
+		minVal:{
+			type:Number,
+			default:-Infinity
+		},
+		step:{ // 累加值
+			type:Number,
+			default:1
+		}
+	},
+	template: `<div>
+				<input :value="myVal"  @change="handleChange" @keyup.up="increase" @keyup.down="decrease"  />
+				<button @click="decrease" :disabled="myVal<=minVal" >-</button>
+				<button @click="increase" :disabled="myVal>=maxVal">+</button>
+			</div>`,
+	data(){
+		return {
+			myVal: -1
+		}
+	},
+	mounted(){ 
+		// 为防止 vlue值不在限定范围内，需要进行过滤
+		this.updateNum(this.value);
+	},
+	methods: {
+		increase() {			
+			this.updateNum(this.myVal + this.step);
+		},
+		decrease() {
+			this.updateNum(this.myVal - this.step);
+		},
+		decreaseTest(){
+			alert("asdf");
+		},
+		updateNum(val) { // 更新数值,对[minVal,maxVal]区间外值进行过滤；
+			if (typeof val==="undefined") { return; }
+			if (val < this.minVal) { val = this.minVal;} // 重置 val
+			if (val > this.maxVal) { val = this.maxVal; } // 重置 val
+			this.myVal = val;
+		},
+		handleChange(event){ // 处理 onchange事件,要 myVal直接赋值。如果交给updateNum,有可能会导致myVal不变，导致输入与data不一致问题。
+			let val = event.target.value.trim();						
+			if (isNumber(val)){
+				val = Number(val);
+				this.myVal = val;
+				this.updateNum(val); // 更新data中的 myVal
+			}else{ // 重置输入的value
+				event.target.value = this.myVal;
+			}
+		}
+	},
+	watch:{
+		value(newVal){
+			this.updateNum(newVal);
+		},
+		myVal(newVal){ // 监听myVal修改，触发props更新,(关联父子组件数据)
+			this.$emit("input",newVal)
+		}
+
+	}
+}
+
 let simpleCrm = {
 	template: `<div>
 					<lt_table @on-deleterecord="deleteRecord"></lt_table>
 					<button class="greenBtn" @click='showTips()'>显示tips</button>
 					<button class="greenBtn" @click='toEdit()'>toEdit</button>
 					<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
+					<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />
 				</div>`,
 	components: {
-		lt_table: lt_table
+		lt_table: lt_table,
+		input_number: inputNumber
 	},
 	data() {
 		return {
+			inputNumber:1, // 数字输入框
 			textContent: '消息提示测试内容123',
 			tipsShow: false,
 		}
@@ -431,3 +516,6 @@ let simpleCrm = {
 		}
 	}
 }
+
+
+
