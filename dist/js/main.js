@@ -384,47 +384,61 @@ var inputNumber = {
 			this.$emit("input", newVal);
 		}
 	}
-};
 
-var simpleCrm = {
-	template: '<div>\n\t\t\t\t\t<lt_table @on-deleterecord="deleteRecord"></lt_table>\n\t\t\t\t\t<button class="greenBtn" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<button class="greenBtn" @click=\'toEdit()\'>toEdit</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t\t<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />\n\t\t\t\t</div>',
-	components: {
-		lt_table: lt_table,
-		input_number: inputNumber
+	// 标签页组件
+};var tabs = {
+	template: '\n\t\t<div class="tabs">\t\t\t\n\t\t\t<div class="tabs-bar">\n\t\t\t\t<button v-for="(item,index) in navList" @click="">{{item.label}}</button>\n\t\t\t</div> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-->\n\t\t\t<div class="tabs-content"> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-\u5185\u5BB9 -->\n\t\t\t\t <slot></slot>\n\t\t\t</div>\n\t\t</div>\n\t',
+	mounted: function mounted() {
+		this.getTabs();
 	},
 	data: function data() {
 		return {
-			inputNumber: 1, // 数字输入框
-			textContent: '消息提示测试内容123',
-			tipsShow: false
+			navList: [], //{label:'',name:""}
+			currentValue: ""
 		};
 	},
 
 	methods: {
-		showTips: function showTips() {
-			this.tipsShow = true;
-			this.textContent = "tips 显示测试";
+		getTabs: function getTabs() {
+			var panes = this.$children.filter(function (item) {
+				return item.$options._componentTag === 'pane';
+			});
+			console.log(panes);
+			return panes;
 		},
-		deleteRecord: function deleteRecord() {
-			this.tipsShow = true;
-			this.textContent = "删除一条记录！";
+		updateNav: function updateNav() {
+			this.navList = [];
+			var _this = this;
+			this.getTabs().forEach(function (pane, index) {
+				// 遍历 pane子组件
+				_this.navList.push({
+					label: pane.label,
+					name: pane.name || index
+				});
+				if (!pane.name) {
+					pane.name = index;
+				}
+				if (index === 0) {
+					if (!_this.currentValue) {
+						_this.currentValue = pane.name || index;
+					}
+				}
+			});
 		},
-		toEdit: function toEdit() {
-			this.$router.push("/infoEdit");
+
+		// 显示控制
+		updateStatus: function updateStatus() {
+			var tabs = this.getTabs();
+			var _this = this;
+			tabs.forEach(function (tab) {
+				return tab.show = tab.anme === _this.currentValue; // 直接修改 pane 数据
+			});
 		}
 	}
-
-	// 标签页组件
-};var tabs = {
-	template: '\n\t\t<div class="tabs">\t\t\t\n\t\t\t<div class="tabs-bar></div> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-->\n\t\t\t<div class="tabs-content"> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-\u5185\u5BB9 -->\n\t\t\t\t<slot></slot>\n\t\t\t</div\n\t\t</div>\n\t'
 
 	//  标签页内容面板组件,面板的显示隐藏通过props控制
 };var pane = {
 	props: {
-		show: {
-			type: Boolean,
-			default: false
-		},
 		name: { // 标签标识符，
 			type: [String, Number],
 			required: true
@@ -438,6 +452,7 @@ var simpleCrm = {
 	template: '\n\t\t<div class="pane" v-show="show">\n\t\t\t<slot></slot>\n\t\t</div>\n\t',
 	data: function data() {
 		return {
+			show: false,
 			mylabel: this.label
 		};
 	},
@@ -454,5 +469,37 @@ var simpleCrm = {
 	},
 	mounted: function mounted() {
 		this.updateNav();
+	}
+};
+
+var simpleCrm = {
+	template: '<div>\n\t\t\t\t\t<lt_table @on-deleterecord="deleteRecord"></lt_table>\n\t\t\t\t\t<button class="greenBtn" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<button class="greenBtn" @click=\'toEdit()\'>toEdit</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t\t<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />\n\n\t\t\t\t\t<tabs>\n\t\t\t\t\t\t<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >\n\t\t\t\t\t\t\t<p>this is a pane</p>\n\t\t\t\t\t\t</pane>\n\t\t\t\t\t</tabs>\n\t\t\t\t</div>',
+	components: {
+		lt_table: lt_table,
+		input_number: inputNumber,
+		tabs: tabs,
+		pane: pane
+	},
+	data: function data() {
+		return {
+			inputNumber: 1, // 数字输入框
+			textContent: '消息提示测试内容123',
+			tipsShow: false,
+			tabs: [{ name: "name1", label: "label1" }, { name: "name2", label: "label2" }, { name: "name3", label: "label3" }] // 标签列表
+		};
+	},
+
+	methods: {
+		showTips: function showTips() {
+			this.tipsShow = true;
+			this.textContent = "tips 显示测试";
+		},
+		deleteRecord: function deleteRecord() {
+			this.tipsShow = true;
+			this.textContent = "删除一条记录！";
+		},
+		toEdit: function toEdit() {
+			this.$router.push("/infoEdit");
+		}
 	}
 };

@@ -117,14 +117,14 @@ Vue.component('todo-item', {
 			required: true
 		}
 	},
-	template:`<li>  				
+	template: `<li>  				
 				<slot name="info"></slot>
 				<button class="greenBtn" @click="doClick">完成</button>
 			</li>`,
-	data: function () {return{}},
+	data: function () { return {} },
 	methods: {
 		doClick() {
-			console.log("父组件标题（使用父链引用）："+this.$parent.message);
+			console.log("父组件标题（使用父链引用）：" + this.$parent.message);
 			this.$emit("update-data", { index: this.index, count: this.count + 1 });
 		}
 	}
@@ -155,16 +155,16 @@ var todolist = {
 			message: 'todo-item 小案例',
 			array: [
 				{ text: '早起', doneCount: 0, accumulator: 5, score: 0 },
-				{ text: '早餐', doneCount: 0, accumulator: 2, score: 0},
-				{ text: '运动', doneCount: 0, accumulator: 1, score: 0},
-				{ text: '洒扫', doneCount: 0, accumulator: 3, score: 0},
-				{ text: '养生', doneCount: 0, accumulator: 1, score: 0}
+				{ text: '早餐', doneCount: 0, accumulator: 2, score: 0 },
+				{ text: '运动', doneCount: 0, accumulator: 1, score: 0 },
+				{ text: '洒扫', doneCount: 0, accumulator: 3, score: 0 },
+				{ text: '养生', doneCount: 0, accumulator: 1, score: 0 }
 				// 描述，完成次数, 累加，分数
 			],
 		}
 	},
-	methods:{
-		updateCount(payload){
+	methods: {
+		updateCount(payload) {
 			let item = this.array[payload.index];
 			item.doneCount = payload.count;
 			item.score = payload.count * item.accumulator;
@@ -418,17 +418,17 @@ let inputNumber = {
 			type: Number,
 			required: true
 		},
-		maxVal:{
-			type:Number,
-			default:Infinity			
+		maxVal: {
+			type: Number,
+			default: Infinity
 		},
-		minVal:{
-			type:Number,
-			default:-Infinity
+		minVal: {
+			type: Number,
+			default: -Infinity
 		},
-		step:{ // 累加值
-			type:Number,
-			default:1
+		step: { // 累加值
+			type: Number,
+			default: 1
 		}
 	},
 	template: `<div>
@@ -436,52 +436,153 @@ let inputNumber = {
 				<button @click="decrease" :disabled="myVal<=minVal" >-</button>
 				<button @click="increase" :disabled="myVal>=maxVal">+</button>
 			</div>`,
-	data(){
+	data() {
 		return {
 			myVal: -1
 		}
 	},
-	mounted(){ 
+	mounted() {
 		// 为防止 vlue值不在限定范围内，需要进行过滤
 		this.updateNum(this.value);
 	},
 	methods: {
-		increase() {			
+		increase() {
 			this.updateNum(this.myVal + this.step);
 		},
 		decrease() {
 			this.updateNum(this.myVal - this.step);
 		},
-		decreaseTest(){
+		decreaseTest() {
 			alert("asdf");
 		},
 		updateNum(val) { // 更新数值,对[minVal,maxVal]区间外值进行过滤；
-			if (typeof val==="undefined") { return; }
-			if (val < this.minVal) { val = this.minVal;} // 重置 val
+			if (typeof val === "undefined") { return; }
+			if (val < this.minVal) { val = this.minVal; } // 重置 val
 			if (val > this.maxVal) { val = this.maxVal; } // 重置 val
 			this.myVal = val;
 		},
-		handleChange(event){ // 处理 onchange事件,要 myVal直接赋值。如果交给updateNum,有可能会导致myVal不变，导致输入与data不一致问题。
-			let val = event.target.value.trim();						
-			if (isNumber(val)){
+		handleChange(event) { // 处理 onchange事件,要 myVal直接赋值。如果交给updateNum,有可能会导致myVal不变，导致输入与data不一致问题。
+			let val = event.target.value.trim();
+			if (isNumber(val)) {
 				val = Number(val);
 				this.myVal = val;
 				this.updateNum(val); // 更新data中的 myVal
-			}else{ // 重置输入的value
+			} else { // 重置输入的value
 				event.target.value = this.myVal;
 			}
 		}
 	},
-	watch:{
-		value(newVal){
+	watch: {
+		value(newVal) {
 			this.updateNum(newVal);
 		},
-		myVal(newVal){ // 监听myVal修改，触发props更新,(关联父子组件数据)
-			this.$emit("input",newVal)
+		myVal(newVal) { // 监听myVal修改，触发props更新,(关联父子组件数据)
+			this.$emit("input", newVal)
 		}
 
 	}
 }
+
+
+
+// 标签页组件
+let tabs = {
+	template: `
+		<div class="tabs">			
+			<div class="tabs-bar">
+				<button v-for="(item,index) in navList" @click="">{{item.label}}</button>
+			</div> <!--这里是标签-->
+			<div class="tabs-content"> <!--这里是标签-内容 -->
+				 <slot></slot>
+			</div>
+		</div>
+	`,
+	mounted() {
+		this.getTabs();
+	},
+	data() {
+		return {
+			navList: [], //{label:'',name:""}
+			currentValue: "",
+		}
+	},
+	methods: {
+		getTabs() {
+			let panes = this.$children.filter(function (item) {
+				return item.$options._componentTag === 'pane';
+			})
+			console.log(panes);
+			return panes;
+		},
+		updateNav() {
+			this.navList = [];
+			var _this = this;
+			this.getTabs().forEach(function (pane, index) { // 遍历 pane子组件
+				_this.navList.push({
+					label: pane.label,
+					name: pane.name || index
+				})
+				if (!pane.name) { pane.name = index; }
+				if (index === 0) {
+					if (!_this.currentValue) {
+						_this.currentValue = pane.name || index;
+					}
+				}
+			})
+		},
+		// 显示控制
+		updateStatus() {
+			let tabs = this.getTabs();
+			let _this = this;
+			tabs.forEach(function (tab) {
+				return tab.show = tab.anme === _this.currentValue;// 直接修改 pane 数据
+			})
+		}
+	}
+}
+
+//  标签页内容面板组件,面板的显示隐藏通过props控制
+let pane = {
+	props: {
+		name: {// 标签标识符，
+			type: [String, Number],
+			required: true,
+		},
+		label: { // 标签上显示的名称,类似于浏览器页面的title,是可以动态修改的。【
+			type: String,
+			default: "标签名",
+			required: true,
+		}
+	},
+	template: `
+		<div class="pane" v-show="show">
+			<slot></slot>
+		</div>
+	`,
+	data() {
+		return {
+			show: false,
+			mylabel: this.label
+		}
+	},
+	methods: {
+		updateNav() {
+			this.$parent.updateNav(); // 调用父组件方法
+		}
+	},
+	watch: {
+		label() {
+			this.updateNav();
+		}
+	},
+	mounted() {
+		this.updateNav();
+	}
+}
+
+
+
+
 
 let simpleCrm = {
 	template: `<div>
@@ -490,16 +591,29 @@ let simpleCrm = {
 					<button class="greenBtn" @click='toEdit()'>toEdit</button>
 					<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
 					<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />
+
+					<tabs>
+						<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >
+							<p>this is a pane</p>
+						</pane>
+					</tabs>
 				</div>`,
 	components: {
 		lt_table: lt_table,
-		input_number: inputNumber
+		input_number: inputNumber,
+		tabs: tabs,
+		pane: pane,
 	},
 	data() {
 		return {
-			inputNumber:1, // 数字输入框
+			inputNumber: 1, // 数字输入框
 			textContent: '消息提示测试内容123',
 			tipsShow: false,
+			tabs: [
+				{ name: "name1", label:"label1" },
+				{ name: "name2", label:"label2" },
+				{ name: "name3", label:"label3" }
+			] // 标签列表
 		}
 	},
 	methods: {
@@ -517,60 +631,4 @@ let simpleCrm = {
 	}
 }
 
-
-
-// 标签页组件
-let tabs = {
-	template:`
-		<div class="tabs">			
-			<div class="tabs-bar></div> <!--这里是标签-->
-			<div class="tabs-content"> <!--这里是标签-内容 -->
-				<slot></slot>
-			</div
-		</div>
-	`,
-}
-
-//  标签页内容面板组件,面板的显示隐藏通过props控制
-let pane = {
-	props:{
-		show:{
-			type:Boolean,
-			default:false
-		},
-		name:{// 标签标识符，
-			type: [String,Number],
-			required: true,
-		},
-		label:{ // 标签上显示的名称,类似于浏览器页面的title,是可以动态修改的。【
-			type:String,
-			default:"标签名",
-			required:true,			
-		}
-	},	
-	template:`
-		<div class="pane" v-show="show">
-			<slot></slot>
-		</div>
-	`,
-	data(){
-		return{
-			mylabel:this.label
-		}
-	},
-	methods:{
-		updateNav(){
-			this.$parent.updateNav(); // 调用父组件方法
-		}
-	},
-	watch:{
-		label(){
-			this.updateNav();			
-		}
-	},
-	mounted(){
-		this.updateNav();		
-	}
-
-}
 
