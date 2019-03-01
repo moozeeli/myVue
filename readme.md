@@ -16,6 +16,8 @@
 8. infoEdit
 9. lt_modal
 10. inputNumber
+11. pane
+12. tabs
 
 
 
