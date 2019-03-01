@@ -472,17 +472,20 @@ var inputNumber = {
 	}
 };
 
-// 展示tab组件
+// tabPage 用于展示tab组件
 var tabPage = {
-	template: '<div class="container">\n\t\t\t\t<tab-box />\n\n\t\t\t\t<tabs>\n\t\t\t\t\t<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >\n\t\t\t\t\t\t<p>this is a pane</p>\n\t\t\t\t\t</pane>\n\t\t\t\t</tabs>\n\n\t\t\t</div>',
+	template: '<div class="container">\n\t\t\t\t<tab-box />\n\n\t\t\t\t<tabs>\n\t\t\t\t\t<pane  v-for="(item,index) in tabs" :key="index" :name="item.name" :label="item.label" >\n\t\t\t\t\t\t<component  :is="item.component"></component >\n\t\t\t\t\t</pane>\n\t\t\t\t</tabs>\n\n\t\t\t</div>',
 	components: {
 		"tab-box": tabBox,
 		"tabs": tabs,
-		"pane": pane
+		"pane": pane,
+		"listButton": listButton,
+		"todolist": todolist,
+		"infoEdit": infoEdit
 	},
 	data: function data() {
 		return {
-			tabs: [{ name: "name1", label: "label1" }, { name: "name2", label: "label2" }, { name: "name3", label: "label3" }] // 标签列表
+			tabs: [{ name: "name1", label: "多个按钮", component: "listButton" }, { name: "name2", label: "代办列表", component: "todolist" }, { name: "name3", label: "输入姓名", component: "infoEdit" }, { name: "name4", label: "输入姓名2", component: "infoEdit" }] // 标签列表
 		};
 	}
 };

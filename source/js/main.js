@@ -582,29 +582,33 @@ let pane = {
 
 
 
-// 展示tab组件
+// tabPage 用于展示tab组件
 let tabPage = {
 	template: `<div class="container">
 				<tab-box />
 
 				<tabs>
-					<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >
-						<p>this is a pane</p>
+					<pane  v-for="(item,index) in tabs" :key="index" :name="item.name" :label="item.label" >
+						<component  :is="item.component"></component >
 					</pane>
 				</tabs>
 
 			</div>`,
-	components:{
+	components: {
 		"tab-box": tabBox,
-		"tabs": tabs,	
+		"tabs": tabs,
 		"pane": pane,
+		"listButton": listButton,
+		"todolist": todolist,
+		"infoEdit": infoEdit,
 	},
-	data(){
+	data() {
 		return {
 			tabs: [
-				{ name: "name1", label: "label1" },
-				{ name: "name2", label: "label2" },
-				{ name: "name3", label: "label3" }
+				{ name: "name1", label: "多个按钮", component: "listButton" },
+				{ name: "name2", label: "代办列表", component: "todolist" },
+				{ name: "name3", label: "输入姓名", component: "infoEdit" },
+				{ name: "name4", label: "输入姓名2", component: "infoEdit" }
 			] // 标签列表
 		}
 	}
@@ -630,7 +634,7 @@ let simpleCrm = {
 			inputNumber: 1, // 数字输入框
 			textContent: '消息提示测试内容123',
 			tipsShow: false,
-			
+
 		}
 	},
 	methods: {
