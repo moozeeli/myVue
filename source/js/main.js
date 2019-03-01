@@ -519,3 +519,7 @@ let simpleCrm = {
 
 
 
+// 标签页组件
+let tabs = {
+
+}

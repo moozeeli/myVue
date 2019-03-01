@@ -413,4 +413,6 @@ var simpleCrm = {
 			this.$router.push("/infoEdit");
 		}
 	}
-};
+
+	// 标签页组件
+};var tabs = {};
