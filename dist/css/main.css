@@ -216,6 +216,21 @@ ul.nav {
     color: white;
     background: #565656; }
 
+.tabs {
+  border: 1px solid #eaeaea;
+  height: 200px;
+  min-width: 30px;
+  max-width: 400px;
+  margin: 20px auto; }
+  .tabs .tabs-bar > button {
+    float: left;
+    text-align: center;
+    padding: 5px 0;
+    width: 100px;
+    background-color: #eaeaea;
+    user-select: none;
+    cursor: pointer; }
+
 .myul {
   line-height: 30px;
   overflow: hidden;
