@@ -15,6 +15,7 @@
 7. infoShow
 8. infoEdit
 9. lt_modal
+10. inputNumber
 
 
 
