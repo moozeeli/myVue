@@ -26,7 +26,8 @@ a {
 .container {
   padding: 20px;
   margin: 40px 20px;
-  border: 1px solid #eaeaea; }
+  border: 1px solid #eaeaea;
+  min-width: 960px; }
 
 ul.nav {
   display: flex;
@@ -219,8 +220,6 @@ ul.nav {
 .tabs {
   border: 1px solid #eaeaea;
   height: 200px;
-  min-width: 30px;
-  max-width: 400px;
   margin: 20px auto; }
   .tabs .tabs-bar {
     display: flex;
