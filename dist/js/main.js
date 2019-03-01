@@ -472,20 +472,33 @@ var inputNumber = {
 	}
 };
 
+// 展示tab组件
+var tabPage = {
+	template: '<div class="container">\n\t\t\t\t<tab-box />\n\n\t\t\t\t<tabs>\n\t\t\t\t\t<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >\n\t\t\t\t\t\t<p>this is a pane</p>\n\t\t\t\t\t</pane>\n\t\t\t\t</tabs>\n\n\t\t\t</div>',
+	components: {
+		"tab-box": tabBox,
+		"tabs": tabs,
+		"pane": pane
+	},
+	data: function data() {
+		return {
+			tabs: [{ name: "name1", label: "label1" }, { name: "name2", label: "label2" }, { name: "name3", label: "label3" }] // 标签列表
+		};
+	}
+};
+
 var simpleCrm = {
-	template: '<div>\n\t\t\t\t\t<lt_table @on-deleterecord="deleteRecord"></lt_table>\n\t\t\t\t\t<button class="greenBtn" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<button class="greenBtn" @click=\'toEdit()\'>toEdit</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t\t<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />\n\n\t\t\t\t\t<tabs>\n\t\t\t\t\t\t<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >\n\t\t\t\t\t\t\t<p>this is a pane</p>\n\t\t\t\t\t\t</pane>\n\t\t\t\t\t</tabs>\n\t\t\t\t</div>',
+	template: '<div>\n\t\t\t\t\t<lt_table @on-deleterecord="deleteRecord"></lt_table>\n\t\t\t\t\t<button class="greenBtn" @click=\'showTips()\'>\u663E\u793Atips</button>\n\t\t\t\t\t<button class="greenBtn" @click=\'toEdit()\'>toEdit</button>\n\t\t\t\t\t<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>\t\n\t\t\t\t\t<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />\t\t\t\t\t\n\t\t\t\t</div>',
 	components: {
 		lt_table: lt_table,
-		input_number: inputNumber,
-		tabs: tabs,
-		pane: pane
+		input_number: inputNumber
 	},
 	data: function data() {
 		return {
 			inputNumber: 1, // 数字输入框
 			textContent: '消息提示测试内容123',
-			tipsShow: false,
-			tabs: [{ name: "name1", label: "label1" }, { name: "name2", label: "label2" }, { name: "name3", label: "label3" }] // 标签列表
+			tipsShow: false
+
 		};
 	},
 

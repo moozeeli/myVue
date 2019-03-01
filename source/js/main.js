@@ -582,6 +582,35 @@ let pane = {
 
 
 
+// 展示tab组件
+let tabPage = {
+	template: `<div class="container">
+				<tab-box />
+
+				<tabs>
+					<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >
+						<p>this is a pane</p>
+					</pane>
+				</tabs>
+
+			</div>`,
+	components:{
+		"tab-box": tabBox,
+		"tabs": tabs,	
+		"pane": pane,
+	},
+	data(){
+		return {
+			tabs: [
+				{ name: "name1", label: "label1" },
+				{ name: "name2", label: "label2" },
+				{ name: "name3", label: "label3" }
+			] // 标签列表
+		}
+	}
+};
+
+
 
 
 let simpleCrm = {
@@ -590,30 +619,18 @@ let simpleCrm = {
 					<button class="greenBtn" @click='showTips()'>显示tips</button>
 					<button class="greenBtn" @click='toEdit()'>toEdit</button>
 					<vue-props-tips v-model="tipsShow" :content="textContent" v-on:close="tipsShow=false"></vue-props-tips>	
-					<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />
-
-					<tabs>
-						<pane v-for="(item,index) in tabs" :name="item.name" :label="item.label" >
-							<p>this is a pane</p>
-						</pane>
-					</tabs>
+					<input_number v-model="inputNumber" :max-val="60" :min-val="2" :step="1" />					
 				</div>`,
 	components: {
 		lt_table: lt_table,
 		input_number: inputNumber,
-		tabs: tabs,
-		pane: pane,
 	},
 	data() {
 		return {
 			inputNumber: 1, // 数字输入框
 			textContent: '消息提示测试内容123',
 			tipsShow: false,
-			tabs: [
-				{ name: "name1", label:"label1" },
-				{ name: "name2", label:"label2" },
-				{ name: "name3", label:"label3" }
-			] // 标签列表
+			
 		}
 	},
 	methods: {
