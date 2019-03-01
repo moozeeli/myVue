@@ -521,5 +521,12 @@ let simpleCrm = {
 
 // 标签页组件
 let tabs = {
-
+	template:`
+		<div class="tabs">			
+			<div class="tabs-bar></div> <!--这里是标签-->
+			<div class="tabs-content"> <!--这里是标签-内容 -->
+				<slot></slot>
+			</div
+		</div>
+	`,
 }

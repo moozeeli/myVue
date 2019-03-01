@@ -415,4 +415,6 @@ var simpleCrm = {
 	}
 
 	// 标签页组件
-};var tabs = {};
+};var tabs = {
+	template: '\n\t\t<div class="tabs">\t\t\t\n\t\t\t<div class="tabs-bar></div> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-->\n\t\t\t<div class="tabs-content"> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-\u5185\u5BB9 -->\n\t\t\t\t<slot></slot>\n\t\t\t</div\n\t\t</div>\n\t'
+};
