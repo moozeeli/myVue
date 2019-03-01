@@ -417,4 +417,42 @@ var simpleCrm = {
 	// 标签页组件
 };var tabs = {
 	template: '\n\t\t<div class="tabs">\t\t\t\n\t\t\t<div class="tabs-bar></div> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-->\n\t\t\t<div class="tabs-content"> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-\u5185\u5BB9 -->\n\t\t\t\t<slot></slot>\n\t\t\t</div\n\t\t</div>\n\t'
+
+	//  标签页内容面板组件,面板的显示隐藏通过props控制
+};var pane = {
+	props: {
+		show: {
+			type: Boolean,
+			default: false
+		},
+		name: { // 标签标识符，
+			type: [String, Number],
+			required: true
+		},
+		label: { // 标签上显示的名称,类似于浏览器页面的title,是可以动态修改的。【
+			type: String,
+			default: "标签名",
+			required: true
+		}
+	},
+	template: '\n\t\t<div class="pane" v-show="show">\n\t\t\t<slot></slot>\n\t\t</div>\n\t',
+	data: function data() {
+		return {
+			mylabel: this.label
+		};
+	},
+
+	methods: {
+		updateNav: function updateNav() {
+			this.$parent.updateNav(); // 调用父组件方法
+		}
+	},
+	watch: {
+		label: function label() {
+			this.updateNav();
+		}
+	},
+	mounted: function mounted() {
+		this.updateNav();
+	}
 };

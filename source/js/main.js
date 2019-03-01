@@ -530,3 +530,47 @@ let tabs = {
 		</div>
 	`,
 }
+
+//  标签页内容面板组件,面板的显示隐藏通过props控制
+let pane = {
+	props:{
+		show:{
+			type:Boolean,
+			default:false
+		},
+		name:{// 标签标识符，
+			type: [String,Number],
+			required: true,
+		},
+		label:{ // 标签上显示的名称,类似于浏览器页面的title,是可以动态修改的。【
+			type:String,
+			default:"标签名",
+			required:true,			
+		}
+	},	
+	template:`
+		<div class="pane" v-show="show">
+			<slot></slot>
+		</div>
+	`,
+	data(){
+		return{
+			mylabel:this.label
+		}
+	},
+	methods:{
+		updateNav(){
+			this.$parent.updateNav(); // 调用父组件方法
+		}
+	},
+	watch:{
+		label(){
+			this.updateNav();			
+		}
+	},
+	mounted(){
+		this.updateNav();		
+	}
+
+}
+
