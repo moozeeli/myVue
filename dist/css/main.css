@@ -222,14 +222,16 @@ ul.nav {
   min-width: 30px;
   max-width: 400px;
   margin: 20px auto; }
-  .tabs .tabs-bar > button {
-    float: left;
-    text-align: center;
-    padding: 5px 0;
-    width: 100px;
-    background-color: #eaeaea;
-    user-select: none;
-    cursor: pointer; }
+  .tabs .tabs-bar {
+    display: flex;
+    overflow: hidden; }
+    .tabs .tabs-bar button {
+      text-align: center;
+      padding: 5px 0;
+      width: 100px;
+      background-color: #eaeaea;
+      user-select: none;
+      cursor: pointer; }
 
 .myul {
   line-height: 30px;
