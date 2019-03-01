@@ -387,7 +387,7 @@ var inputNumber = {
 
 	// 标签页组件
 };var tabs = {
-	template: '\n\t\t<div class="tabs">\t\t\t\n\t\t\t<div class="tabs-bar">\n\t\t\t\t<button v-for="(item,index) in navList" @click="">{{item.label}}</button>\n\t\t\t</div> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-->\n\t\t\t<div class="tabs-content"> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-\u5185\u5BB9 -->\n\t\t\t\t <slot></slot>\n\t\t\t</div>\n\t\t</div>\n\t',
+	template: '\n\t\t<div class="tabs">\t\t\t\n\t\t\t<div class="tabs-bar">\n\t\t\t\t<button v-for="(item,index) in navList" @click="showTab(item.name)">{{item.label}}</button>\n\t\t\t</div> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-->\n\t\t\t<div class="tabs-content"> <!--\u8FD9\u91CC\u662F\u6807\u7B7E-\u5185\u5BB9 -->\n\t\t\t\t<slot></slot>\n\t\t\t</div>\n\t\t</div>\n\t',
 	mounted: function mounted() {
 		this.getTabs();
 	},
@@ -399,11 +399,11 @@ var inputNumber = {
 	},
 
 	methods: {
+		// 获取子组件 pane 列表
 		getTabs: function getTabs() {
 			var panes = this.$children.filter(function (item) {
 				return item.$options._componentTag === 'pane';
 			});
-			console.log(panes);
 			return panes;
 		},
 		updateNav: function updateNav() {
@@ -425,13 +425,17 @@ var inputNumber = {
 				}
 			});
 		},
+		showTab: function showTab(name) {
+			this.currentValue = name;
+			this.updateStatus();
+		},
 
-		// 显示控制
+		// 更新显示状态
 		updateStatus: function updateStatus() {
 			var tabs = this.getTabs();
 			var _this = this;
 			tabs.forEach(function (tab) {
-				return tab.show = tab.anme === _this.currentValue; // 直接修改 pane 数据
+				return tab.show = tab.name === _this.currentValue; // 直接修改 pane 数据
 			});
 		}
 	}
@@ -449,7 +453,7 @@ var inputNumber = {
 			required: true
 		}
 	},
-	template: '\n\t\t<div class="pane" v-show="show">\n\t\t\t<slot></slot>\n\t\t</div>\n\t',
+	template: '\n\t\t<div class="pane" v-show="show">\n\t\t\t<slot>\n\t\t\t <p>{{mylabel}}</p>\n\t\t\t</slot>\n\t\t</div>\n\t',
 	data: function data() {
 		return {
 			show: false,
@@ -474,7 +478,7 @@ var inputNumber = {
 
 // tabPage 用于展示tab组件
 var tabPage = {
-	template: '<div class="container">\n\t\t\t\t<tab-box />\n\n\t\t\t\t<tabs>\n\t\t\t\t\t<pane  v-for="(item,index) in tabs" :key="index" :name="item.name" :label="item.label" >\n\t\t\t\t\t\t<component  :is="item.component"></component >\n\t\t\t\t\t</pane>\n\t\t\t\t</tabs>\n\n\t\t\t</div>',
+	template: '<div class="container">\n\t\t\t\t<!--\u81EA\u5B9A\u4E49tab\u7EC4\u4EF6\uFF0C\u4E1A\u52A1\u7EC4\u4EF6\uFF0C\u4E0D\u53EF\u590D\u7528-->\n\t\t\t\t<tab-box />\n\n\t\t\t\t<!--tab\u7EC4\u4EF6\u5F00\u53D1\u5B9E\u6218\u5B66\u4E60\uFF0C\u4EA4\u4E92\u903B\u8F91\u4E0E\u4E1A\u52A1\u903B\u8F91\u5206\u79BB-->\n\t\t\t\t<tabs>\n\t\t\t\t\t<pane  v-for="(item,index) in tabs" :key="index" :name="item.name" :label="item.label" >\n\t\t\t\t\t\t<component  :is="item.component"></component >\n\t\t\t\t\t</pane>\n\t\t\t\t</tabs>\n\n\t\t\t</div>',
 	components: {
 		"tab-box": tabBox,
 		"tabs": tabs,
@@ -485,7 +489,7 @@ var tabPage = {
 	},
 	data: function data() {
 		return {
-			tabs: [{ name: "name1", label: "多个按钮", component: "listButton" }, { name: "name2", label: "代办列表", component: "todolist" }, { name: "name3", label: "输入姓名", component: "infoEdit" }, { name: "name4", label: "输入姓名2", component: "infoEdit" }] // 标签列表
+			tabs: [{ name: "name1", label: "多个按钮", component: "listButton" }, { name: "name2", label: "代办列表", component: "todolist" }, { name: "name3", label: "输入姓名", component: "infoEdit" }, { name: "name4", label: "输入姓名2", component: "" }] // 标签列表
 		};
 	}
 };

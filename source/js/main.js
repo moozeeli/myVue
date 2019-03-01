@@ -490,10 +490,10 @@ let tabs = {
 	template: `
 		<div class="tabs">			
 			<div class="tabs-bar">
-				<button v-for="(item,index) in navList" @click="">{{item.label}}</button>
+				<button v-for="(item,index) in navList" @click="showTab(item.name)">{{item.label}}</button>
 			</div> <!--这里是标签-->
 			<div class="tabs-content"> <!--这里是标签-内容 -->
-				 <slot></slot>
+				<slot></slot>
 			</div>
 		</div>
 	`,
@@ -507,11 +507,11 @@ let tabs = {
 		}
 	},
 	methods: {
+		// 获取子组件 pane 列表
 		getTabs() {
 			let panes = this.$children.filter(function (item) {
 				return item.$options._componentTag === 'pane';
 			})
-			console.log(panes);
 			return panes;
 		},
 		updateNav() {
@@ -530,12 +530,16 @@ let tabs = {
 				}
 			})
 		},
-		// 显示控制
+		showTab(name){
+			this.currentValue = name;
+			this.updateStatus();
+		},
+		// 更新显示状态
 		updateStatus() {
 			let tabs = this.getTabs();
 			let _this = this;
 			tabs.forEach(function (tab) {
-				return tab.show = tab.anme === _this.currentValue;// 直接修改 pane 数据
+				return tab.show = (tab.name === _this.currentValue);// 直接修改 pane 数据
 			})
 		}
 	}
@@ -556,7 +560,9 @@ let pane = {
 	},
 	template: `
 		<div class="pane" v-show="show">
-			<slot></slot>
+			<slot>
+			 <p>{{mylabel}}</p>
+			</slot>
 		</div>
 	`,
 	data() {
@@ -585,8 +591,10 @@ let pane = {
 // tabPage 用于展示tab组件
 let tabPage = {
 	template: `<div class="container">
+				<!--自定义tab组件，业务组件，不可复用-->
 				<tab-box />
 
+				<!--tab组件开发实战学习，交互逻辑与业务逻辑分离-->
 				<tabs>
 					<pane  v-for="(item,index) in tabs" :key="index" :name="item.name" :label="item.label" >
 						<component  :is="item.component"></component >
@@ -608,7 +616,7 @@ let tabPage = {
 				{ name: "name1", label: "多个按钮", component: "listButton" },
 				{ name: "name2", label: "代办列表", component: "todolist" },
 				{ name: "name3", label: "输入姓名", component: "infoEdit" },
-				{ name: "name4", label: "输入姓名2", component: "infoEdit" }
+				{ name: "name4", label: "输入姓名2", component: "" }
 			] // 标签列表
 		}
 	}
