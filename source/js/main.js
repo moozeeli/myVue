@@ -173,9 +173,7 @@ var todolist = {
 	computed: {
 		sumCount: function () {
 			let result = 0;
-			this.array.map(function (value, index, arr) {
-				result += value.score;
-			})
+			this.array.map((value, index, arr)=> result += value.score)
 			return result;
 		}
 	}
@@ -509,15 +507,13 @@ let tabs = {
 	methods: {
 		// 获取子组件 pane 列表
 		getTabs() {
-			let panes = this.$children.filter(function (item) {
-				return item.$options._componentTag === 'pane';
-			})
+			let panes = this.$children.filter(item=> item.$options._componentTag === 'pane' );
 			return panes;
 		},
 		updateNav() {
 			this.navList = [];
 			var _this = this;
-			this.getTabs().forEach(function (pane, index) { // 遍历 pane子组件
+			this.getTabs().forEach((pane, index)=> { // 遍历 pane子组件
 				_this.navList.push({
 					label: pane.label,
 					name: pane.name || index
@@ -538,9 +534,9 @@ let tabs = {
 		updateStatus() {
 			let tabs = this.getTabs();
 			let _this = this;
-			tabs.forEach(function (tab) {
-				return tab.show = (tab.name === _this.currentValue);// 直接修改 pane 数据
-			})
+			tabs.forEach(
+				tab=>  tab.show = (tab.name === _this.currentValue)// 直接修改 pane 数据
+			)
 		}
 	}
 }
@@ -621,8 +617,6 @@ let tabPage = {
 		}
 	}
 };
-
-
 
 
 let simpleCrm = {

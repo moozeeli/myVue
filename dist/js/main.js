@@ -119,7 +119,7 @@ var todolist = {
 		sumCount: function sumCount() {
 			var result = 0;
 			this.array.map(function (value, index, arr) {
-				result += value.score;
+				return result += value.score;
 			});
 			return result;
 		}
@@ -435,8 +435,9 @@ var inputNumber = {
 			var tabs = this.getTabs();
 			var _this = this;
 			tabs.forEach(function (tab) {
-				return tab.show = tab.name === _this.currentValue; // 直接修改 pane 数据
-			});
+				return tab.show = tab.name === _this.currentValue;
+			} // 直接修改 pane 数据
+			);
 		}
 	}
 
