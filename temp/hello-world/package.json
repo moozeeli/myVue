@@ -1,0 +1,48 @@
+{
+  "name": "hello-world",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "element-ui": "^2.15.5",
+    "vue": "^2.6.12",
+    "vue-router": "^3.5.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.15.0",
+    "@vue/cli-plugin-babel": "^4.5.11",
+    "@vue/cli-plugin-eslint": "^4.5.11",
+    "@vue/cli-plugin-router": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-component": "^1.1.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.12",
+    "webpack-bundle-analyzer": "^4.4.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

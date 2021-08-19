@@ -1,0 +1,32 @@
+﻿.setTest{
+    background: white;
+    display: flex;
+
+    ul{
+        border: 1px solid #ccc;
+        width: 200px;
+        padding:20px;
+        margin-left: 10px;
+        li{
+            padding:0 10px;
+            line-height: 40px;
+            height: 40px;
+            border-bottom:1px solid black;
+            position: relative;
+        }
+        li:hover{
+            background-color:rgb(255, 185, 185)
+        }
+        li.active,li:active{
+            background-color: red;
+            color:white;
+        }
+        .list2:hover:after{
+            content:"删除";
+            position:absolute;
+            top:0;
+            right: 0;
+        }
+        
+    }
+}
