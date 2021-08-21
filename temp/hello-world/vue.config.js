@@ -6,7 +6,7 @@ module.exports={
     plugins: [
       new BundleAnalyzerPlugin({
         analyzerMode:"static",
-
+        statsFilename:'../report/report.html'
       })
     ]
   }
