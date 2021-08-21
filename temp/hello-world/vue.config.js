@@ -1,9 +1,13 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin
+    
 module.exports={
   configureWebpack: {
     plugins: [
-      new BundleAnalyzerPlugin()
+      new BundleAnalyzerPlugin({
+        analyzerMode:"static",
+
+      })
     ]
   }
 }
